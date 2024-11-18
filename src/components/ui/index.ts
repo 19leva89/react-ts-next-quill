@@ -1,5 +1,5 @@
 export { Avatar, AvatarFallback, AvatarImage } from './avatar'
-export { Button } from './button'
+export { Button, buttonVariants } from './button'
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card'
 export { Dialog, DialogContent, DialogTitle } from './dialog'
 export {
@@ -21,4 +21,5 @@ export {
 	ToastTitle,
 	ToastViewport,
 } from './toast'
+export type { ToastActionElement, ToastProps } from './toast'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
