@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { PropsWithChildren } from 'react'
 
 import { cn } from '@/lib'
+import { Navbar, Providers } from '@/components/shared'
 
 import './globals.css'
 // import 'simplebar-react/dist/simplebar.min.css'
@@ -15,14 +16,18 @@ export const metadata: Metadata = {
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: ReactNode
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en" className="light">
-			<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>{children}</body>
+			<Providers>
+				<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
+					{/* <Toaster /> */}
+
+					<Navbar />
+
+					{children}
+				</body>
+			</Providers>
 		</html>
 	)
 }

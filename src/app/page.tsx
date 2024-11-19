@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui'
 import { MaxWidthWrapper } from '@/components/shared'
 
-export default function Home() {
+const HomePage = () => {
 	return (
 		<>
 			<MaxWidthWrapper className="mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center">
@@ -151,3 +151,5 @@ export default function Home() {
 		</>
 	)
 }
+
+export default HomePage

@@ -1,3 +1,6 @@
+Authentication and User Management:
+- Kinde (authentication)
+
 Core Technologies:
 - React 18
 - TypeScript
@@ -12,6 +15,7 @@ Form and Validation:
 
 Middleware and Server Utilities:
 - Concurrently (all projects are running in tandem)
+- tRPC (end-to-end typesafe APIs)
 
 Payment:
 - Stripe (payment service provider)
@@ -25,3 +29,15 @@ Styling and UI Frameworks:
 
 Utilities and Libraries:
 - PostCSS (transforms CSS code to AST)
+
+To run the client and server via concurrently:
+terminal powershell -> npm run all
+
+terminal powershell -> npx prisma generate
+terminal powershell -> npx prisma db push
+terminal powershell -> npx prisma migrate reset
+
+terminal powershell -> npx prisma db seed (loading test database)
+
+terminal CommandPrompt -> stripe login
+terminal CommandPrompt -> stripe listen --forward-to localhost:3000/api/webhook
