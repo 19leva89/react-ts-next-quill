@@ -3,7 +3,7 @@
 import { Loader2 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-import { trpc } from '@/app/(trpc)/client'
+import { trpc } from '@/app/_trpc/client'
 
 const AuthCallbackPage = () => {
 	const router = useRouter()
@@ -34,7 +34,7 @@ const AuthCallbackPage = () => {
 
 				<h3 className="font-semibold text-xl">Setting up your account...</h3>
 
-				<p>You will be redirected automatically.</p>
+				<p>You will be redirected automatically</p>
 			</div>
 		</div>
 	)

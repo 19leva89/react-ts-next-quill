@@ -5,7 +5,7 @@ import { PropsWithChildren, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { absoluteUrl } from '@/lib'
-import { trpc } from '@/app/(trpc)/client'
+import { trpc } from '@/app/_trpc/client'
 
 export const Providers = ({ children }: PropsWithChildren) => {
 	const [queryClient] = useState(() => new QueryClient())

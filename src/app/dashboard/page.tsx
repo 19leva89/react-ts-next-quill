@@ -5,9 +5,10 @@ import { prisma } from '@/db'
 
 const DashboardPage = async () => {
 	const { getUser } = getKindeServerSession()
-	const user = await getUser()
+	const user = await getUser() // Добавляем await, чтобы дождаться результата
+	console.log('user', user)
 
-	if (!user || !user.id) redirect(`/auth-callback?origin=dashboard`)
+	if (!user || !user.id) redirect('/auth-callback?origin=dashboard')
 
 	const dbUser = await prisma.user.findFirst({
 		where: {
@@ -15,7 +16,9 @@ const DashboardPage = async () => {
 		},
 	})
 
-	if (!dbUser) redirect('/auth-callback?origin=dashboard')
+	if (!dbUser) {
+		redirect('/auth-callback?origin=dashboard')
+	}
 
 	// const subscriptionPlan = await getUserSubscriptionPlan()
 

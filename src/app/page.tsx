@@ -24,8 +24,6 @@ const HomePage = () => {
 
 				<Link
 					href="/dashboard"
-					target="_blank"
-					rel="noreferrer noopener"
 					className={buttonVariants({
 						size: 'lg',
 						className: 'mt-5',
