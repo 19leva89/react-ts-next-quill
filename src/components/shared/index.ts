@@ -1,3 +1,6 @@
+export { Dashboard } from './dashboard'
+export { Icons } from './icons'
 export { MaxWidthWrapper } from './max-width-wrapper'
 export { Navbar } from './navbar'
 export { Providers } from './providers'
+export { UserAccountNav } from './user-account-nav'

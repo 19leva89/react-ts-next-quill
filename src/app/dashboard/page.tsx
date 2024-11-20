@@ -1,14 +1,20 @@
+'use server'
+
 import { redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
+import { Dashboard } from '@/components/shared'
 
 const DashboardPage = async () => {
 	const { getUser } = getKindeServerSession()
-	const user = await getUser() // Добавляем await, чтобы дождаться результата
+	const user = await getUser()
 	console.log('user', user)
 
-	if (!user || !user.id) redirect('/auth-callback?origin=dashboard')
+	// Check if the user is authenticated
+	if (!user || !user.id) {
+		return redirect('/auth-callback?origin=dashboard')
+	}
 
 	const dbUser = await prisma.user.findFirst({
 		where: {
@@ -17,16 +23,12 @@ const DashboardPage = async () => {
 	})
 
 	if (!dbUser) {
-		redirect('/auth-callback?origin=dashboard')
+		return redirect('/auth-callback?origin=dashboard')
 	}
 
 	// const subscriptionPlan = await getUserSubscriptionPlan()
 
-	return (
-		<div>
-			<h1>Dashboard</h1>
-		</div>
-	)
+	return <Dashboard />
 }
 
 export default DashboardPage

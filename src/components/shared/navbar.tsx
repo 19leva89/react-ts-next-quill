@@ -3,11 +3,11 @@ import { ArrowRight } from 'lucide-react'
 import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { buttonVariants } from '@/components/ui'
-import { MaxWidthWrapper } from '@/components/shared'
+import { MaxWidthWrapper, UserAccountNav } from '@/components/shared'
 
-export const Navbar = () => {
+export const Navbar = async () => {
 	const { getUser } = getKindeServerSession()
-	const user = getUser()
+	const user = await getUser()
 
 	return (
 		<nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -61,7 +61,7 @@ export const Navbar = () => {
 									Dashboard
 								</Link>
 
-								{/* <UserAccountNav
+								<UserAccountNav
 									name={
 										!user.given_name || !user.family_name
 											? 'Your Account'
@@ -69,7 +69,7 @@ export const Navbar = () => {
 									}
 									email={user.email ?? ''}
 									imageUrl={user.picture ?? ''}
-								/> */}
+								/>
 							</>
 						)}
 					</div>

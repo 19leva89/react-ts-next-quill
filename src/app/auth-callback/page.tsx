@@ -1,31 +1,34 @@
 'use client'
 
+import { Suspense } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { trpc } from '@/app/_trpc/client'
 
-const AuthCallbackPage = () => {
+const AuthCallbackContent = () => {
 	const router = useRouter()
-
 	const searchParams = useSearchParams()
 	const origin = searchParams.get('origin')
 
-	trpc.authCallback.useQuery(undefined, {
-		onSuccess: ({ success }) => {
-			if (success) {
-				// user is synced to db
-				router.push(origin ? `/${origin}` : '/dashboard')
-			}
-		},
-		onError: (err) => {
-			if (err.data?.code === 'UNAUTHORIZED') {
-				router.push('/sign-in')
-			}
-		},
-		retry: true,
-		retryDelay: 500,
-	})
+	// Getting data via trpc
+	const { data, error, isError } = trpc.authCallback.useQuery(undefined)
+
+	if (data?.success) {
+		if (origin && origin !== 'dashboard') {
+			router.push(`/${encodeURIComponent(origin)}`)
+		} else {
+			router.push('/dashboard')
+		}
+	}
+
+	if (isError) {
+		if (error.data?.code === 'UNAUTHORIZED') {
+			router.push('/sign-in')
+		} else {
+			console.error('Unexpected error:', error)
+		}
+	}
 
 	return (
 		<div className="w-full mt-24 flex justify-center">
@@ -37,6 +40,14 @@ const AuthCallbackPage = () => {
 				<p>You will be redirected automatically</p>
 			</div>
 		</div>
+	)
+}
+
+const AuthCallbackPage = () => {
+	return (
+		<Suspense>
+			<AuthCallbackContent />
+		</Suspense>
 	)
 }
 

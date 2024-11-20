@@ -2,6 +2,7 @@
 
 import { httpBatchLink } from '@trpc/client'
 import { PropsWithChildren, useState } from 'react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { absoluteUrl } from '@/lib'
@@ -21,7 +22,11 @@ export const Providers = ({ children }: PropsWithChildren) => {
 
 	return (
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>
+				{children}
+
+				<ReactQueryDevtools initialIsOpen={false} />
+			</QueryClientProvider>
 		</trpc.Provider>
 	)
 }
