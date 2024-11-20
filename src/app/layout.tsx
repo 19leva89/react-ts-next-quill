@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
 
 import { cn } from '@/lib'
-import { Navbar, Providers } from '@/components/shared'
+import { Navbar, AuthProvider } from '@/components/shared'
 
 import './globals.css'
 // import 'simplebar-react/dist/simplebar.min.css'
@@ -16,18 +16,18 @@ export const metadata: Metadata = {
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en" className="light">
-			<Providers>
-				<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
+			<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
+				<AuthProvider>
 					{/* <Toaster /> */}
 
 					<Navbar />
 
 					{children}
-				</body>
-			</Providers>
+				</AuthProvider>
+			</body>
 		</html>
 	)
 }

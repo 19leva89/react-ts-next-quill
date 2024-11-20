@@ -6,10 +6,19 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-export function absoluteUrl(path: string) {
-	if (typeof window !== 'undefined') return path
-	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`
-	return `http://localhost:${process.env.PORT ?? 3000}${path}`
+export function absoluteUrl(path: string): string {
+	// If in a browser, return the relative path
+	if (typeof window !== 'undefined') {
+		return path
+	}
+
+	// Define the base URL
+	const baseUrl = process.env.VERCEL_URL
+		? `https://${process.env.VERCEL_URL}`
+		: `http://localhost:${process.env.PORT || 3000}`
+
+	// Remove extra slashes to avoid format errors
+	return new URL(path, baseUrl).toString()
 }
 
 export function constructMetadata({

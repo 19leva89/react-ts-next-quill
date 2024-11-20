@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { absoluteUrl } from '@/lib'
 import { trpc } from '@/app/_trpc/client'
 
-export const Providers = ({ children }: PropsWithChildren) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
 	const [queryClient] = useState(() => new QueryClient())
 	const [trpcClient] = useState(() =>
 		trpc.createClient({

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { privateProcedure, publicProcedure, router } from '@/trpc/trpc'
+import { privateProcedure, publicProcedure, router } from './trpc'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
@@ -11,29 +11,49 @@ import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 
 export const appRouter = router({
 	authCallback: publicProcedure.query(async () => {
-		const { getUser } = getKindeServerSession()
-		const user = await getUser()
+		try {
+			// Getting user data via Kinde
+			const { getUser } = getKindeServerSession()
+			const user = await getUser()
 
-		if (!user.id || !user.email) throw new TRPCError({ code: 'UNAUTHORIZED' })
+			if (!user.id || !user.email) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: 'User ID or email is missing',
+				})
+			}
 
-		// check if the user is in the database
-		const dbUser = await prisma.user.findFirst({
-			where: {
-				id: user.id,
-			},
-		})
+			// Checking the existence of a user in the database
+			const dbUser = await prisma.user.findFirst({
+				where: { id: user.id },
+			})
 
-		if (!dbUser) {
-			// create user in db
-			await prisma.user.create({
-				data: {
-					id: user.id,
-					email: user.email,
-				},
+			if (!dbUser) {
+				// Creating a new user in the database
+				await prisma.user.create({
+					data: {
+						id: user.id,
+						email: user.email,
+					},
+				})
+			}
+
+			// Successful response
+			return { success: true }
+		} catch (error) {
+			console.error('Error in authCallback:', error)
+
+			// TRPC Error Handling
+			if (error instanceof TRPCError) {
+				throw error // TRPC Error Throw
+			}
+
+			// General error for all other cases
+			throw new TRPCError({
+				code: 'INTERNAL_SERVER_ERROR',
+				message: 'An error occurred during user authentication',
 			})
 		}
-
-		return { success: true }
 	}),
 
 	getUserFiles: privateProcedure.query(async ({ ctx }) => {

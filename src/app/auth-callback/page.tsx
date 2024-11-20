@@ -1,33 +1,25 @@
 'use client'
 
-import { Suspense } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { trpc } from '@/app/_trpc/client'
 
-const AuthCallbackContent = () => {
+const AuthCallbackPage = () => {
 	const router = useRouter()
+
 	const searchParams = useSearchParams()
 	const origin = searchParams.get('origin')
 
 	// Getting data via trpc
-	const { data, error, isError } = trpc.authCallback.useQuery(undefined)
+	const { data, error } = trpc.authCallback.useQuery(undefined)
 
 	if (data?.success) {
-		if (origin && origin !== 'dashboard') {
-			router.push(`/${encodeURIComponent(origin)}`)
-		} else {
-			router.push('/dashboard')
-		}
+		router.push(origin ? `/${encodeURIComponent(origin)}` : '/dashboard')
 	}
 
-	if (isError) {
-		if (error.data?.code === 'UNAUTHORIZED') {
-			router.push('/sign-in')
-		} else {
-			console.error('Unexpected error:', error)
-		}
+	if (error?.data?.code === 'UNAUTHORIZED') {
+		router.push('/sign-in')
 	}
 
 	return (
@@ -37,17 +29,9 @@ const AuthCallbackContent = () => {
 
 				<h3 className="font-semibold text-xl">Setting up your account...</h3>
 
-				<p>You will be redirected automatically</p>
+				<p>You will be redirected automatically.</p>
 			</div>
 		</div>
-	)
-}
-
-const AuthCallbackPage = () => {
-	return (
-		<Suspense>
-			<AuthCallbackContent />
-		</Suspense>
 	)
 }
 

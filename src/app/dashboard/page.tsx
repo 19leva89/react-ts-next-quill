@@ -9,7 +9,6 @@ import { Dashboard } from '@/components/shared'
 const DashboardPage = async () => {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
-	console.log('user', user)
 
 	// Check if the user is authenticated
 	if (!user || !user.id) {
