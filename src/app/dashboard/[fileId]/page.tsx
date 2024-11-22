@@ -5,6 +5,7 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
 import { PdfRenderer } from '@/components/shared'
+import { ChatWrapper } from '@/components/shared/chat'
 // import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 interface DashboardIdPageProps {
@@ -44,7 +45,10 @@ const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
 				</div>
 
 				<div className="shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
-					{/* <ChatWrapper isSubscribed={plan.isSubscribed} fileId={file.id} /> */}
+					<ChatWrapper
+						// isSubscribed={plan.isSubscribed}
+						fileId={file.id}
+					/>
 				</div>
 			</div>
 		</div>

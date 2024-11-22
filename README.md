@@ -36,7 +36,11 @@ Styling and UI Frameworks:
 - Tailwind CSS Animate
 - Tailwind CSS Typography
 
+Text Editing:
+- React Markdown
+
 Utilities and Libraries:
+- @mantine/hooks (styling)
 - Date-fns (date/time manipulation)
 - PostCSS (transforms CSS code to AST)
 - React Resize Detector (detecting window size)

@@ -1,3 +1,4 @@
+export * from './chat'
 export { AuthProvider } from './auth-provider'
 export { Dashboard } from './dashboard'
 export { Icons } from './icons'
