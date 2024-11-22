@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-		"postinstall": "npx prisma generate",
+    "postinstall": "npx prisma generate",
     "all": "concurrently \"npm run dev\" \"npx prisma studio\""
   },
   "dependencies": {
@@ -27,14 +27,22 @@
     "@trpc/next": "^11.0.0-rc.638",
     "@trpc/react-query": "^11.0.0-rc.638",
     "@trpc/server": "^11.0.0-rc.638",
+    "@uploadthing/react": "^7.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-dropzone": "^14.3.5",
+    "react-loading-skeleton": "^3.5.0",
+    "react-pdf": "^9.1.1",
+    "react-resize-detector": "^11.0.1",
+    "simplebar-react": "^3.2.6",
     "stripe": "^17.3.1",
     "tailwind-merge": "^2.5.4",
+    "uploadthing": "^7.3.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

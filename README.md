@@ -1,6 +1,9 @@
 Authentication and User Management:
 - Kinde (authentication)
 
+Content Management:
+- React PDF (reading PDF files)
+
 Core Technologies:
 - React 18
 - TypeScript
@@ -13,22 +16,30 @@ Form and Validation:
 - React Hook Form (working with forms)
 - Zod (first schema validation)
 
+Image Handling and Optimization:
+- React Dropzone (drag and drop)
+
 Middleware and Server Utilities:
 - Concurrently (all projects are running in tandem)
 - tRPC (end-to-end typesafe APIs)
+- UploadThing (uploading files)
 
 Payment:
 - Stripe (payment service provider)
 
 Styling and UI Frameworks:
 - Lucide React (stylization)
+- React Loading Skeleton (stylization)
+- SimpleBar React (stylization)
 - shadcn/ui (stylization)
 - Tailwind CSS (stylization)
 - Tailwind CSS Animate
 - Tailwind CSS Typography
 
 Utilities and Libraries:
+- Date-fns (date/time manipulation)
 - PostCSS (transforms CSS code to AST)
+- React Resize Detector (detecting window size)
 
 To run the client and server via concurrently:
 terminal powershell -> npm run all

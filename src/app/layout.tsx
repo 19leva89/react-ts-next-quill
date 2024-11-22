@@ -6,8 +6,8 @@ import { cn } from '@/lib'
 import { Navbar, AuthProvider } from '@/components/shared'
 
 import './globals.css'
-// import 'simplebar-react/dist/simplebar.min.css'
-// import 'react-loading-skeleton/dist/skeleton.css'
+import 'simplebar-react/dist/simplebar.min.css'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',

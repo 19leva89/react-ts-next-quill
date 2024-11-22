@@ -1,7 +1,7 @@
 export { Avatar, AvatarFallback, AvatarImage } from './avatar'
 export { Button, buttonVariants } from './button'
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card'
-export { Dialog, DialogContent, DialogTitle } from './dialog'
+export { Dialog, DialogContent, DialogTitle, DialogTrigger } from './dialog'
 export {
 	DropdownMenu,
 	DropdownMenuContent,

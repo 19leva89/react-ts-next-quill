@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -14,13 +15,13 @@ const AuthCallbackPage = () => {
 	// Getting data via trpc
 	const { data, error } = trpc.authCallback.useQuery(undefined)
 
-	if (data?.success) {
-		router.push(origin ? `/${encodeURIComponent(origin)}` : '/dashboard')
-	}
-
-	if (error?.data?.code === 'UNAUTHORIZED') {
-		router.push('/sign-in')
-	}
+	useEffect(() => {
+		if (data?.success) {
+			router.push(origin ? `/${encodeURIComponent(origin)}` : '/dashboard')
+		} else if (error?.data?.code === 'UNAUTHORIZED') {
+			router.push('/sign-in')
+		}
+	}, [data, error, origin, router])
 
 	return (
 		<div className="w-full mt-24 flex justify-center">
@@ -29,7 +30,7 @@ const AuthCallbackPage = () => {
 
 				<h3 className="font-semibold text-xl">Setting up your account...</h3>
 
-				<p>You will be redirected automatically.</p>
+				<p>You will be redirected automatically</p>
 			</div>
 		</div>
 	)

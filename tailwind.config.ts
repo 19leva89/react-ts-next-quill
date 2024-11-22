@@ -5,9 +5,9 @@ import tailwindcssTypography from '@tailwindcss/typography'
 export default {
 	darkMode: ['class'],
 	content: [
-		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
-		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/pages/**/*.{ts,tsx,mdx}',
+		'./src/components/**/*.{ts,tsx,mdx}',
+		'./src/app/**/*.{ts,tsx,mdx}',
 	],
 	theme: {
 		container: {

@@ -1,3 +1,5 @@
+'use server'
+
 import Link from 'next/link'
 import Image from 'next/image'
 // import { Gem } from 'lucide-react'

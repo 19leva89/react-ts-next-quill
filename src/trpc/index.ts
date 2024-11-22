@@ -16,11 +16,9 @@ export const appRouter = router({
 			const { getUser } = getKindeServerSession()
 			const user = await getUser()
 
+			// User ID or email is missing
 			if (!user.id || !user.email) {
-				throw new TRPCError({
-					code: 'UNAUTHORIZED',
-					message: 'User ID or email is missing',
-				})
+				throw new TRPCError({ code: 'UNAUTHORIZED' })
 			}
 
 			// Checking the existence of a user in the database
@@ -50,7 +48,7 @@ export const appRouter = router({
 
 			// General error for all other cases
 			throw new TRPCError({
-				code: 'INTERNAL_SERVER_ERROR',
+				code: 'UNAUTHORIZED',
 				message: 'An error occurred during user authentication',
 			})
 		}

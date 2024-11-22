@@ -1,10 +1,26 @@
 import { TRPCError, initTRPC } from '@trpc/server'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
-const t = initTRPC.create()
+const t = initTRPC.create({
+	errorFormatter({ shape, error }) {
+		// Logging an error on the server
+		console.error('tRPC Error:', error)
+
+		// Return formatted error
+		return {
+			...shape,
+			data: {
+				...shape.data,
+				// Add additional debugging information if needed
+				message: error.message,
+			},
+		}
+	},
+})
+
 const middleware = t.middleware
 
-const isAuth = middleware(async (opts) => {
+const isAuth = middleware(async (options) => {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
 
@@ -12,7 +28,7 @@ const isAuth = middleware(async (opts) => {
 		throw new TRPCError({ code: 'UNAUTHORIZED' })
 	}
 
-	return opts.next({
+	return options.next({
 		ctx: {
 			userId: user.id,
 			user,
