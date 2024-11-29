@@ -37,6 +37,7 @@ const DropdownMenuSubTrigger = forwardRef<
 		<ChevronRight className="ml-auto" />
 	</DropdownMenuPrimitive.SubTrigger>
 ))
+
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName
 
 const DropdownMenuSubContent = forwardRef<
@@ -52,6 +53,7 @@ const DropdownMenuSubContent = forwardRef<
 		{...props}
 	/>
 ))
+
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName
 
 const DropdownMenuContent = forwardRef<
@@ -70,6 +72,7 @@ const DropdownMenuContent = forwardRef<
 		/>
 	</DropdownMenuPrimitive.Portal>
 ))
+
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
 const DropdownMenuItem = forwardRef<
@@ -88,6 +91,7 @@ const DropdownMenuItem = forwardRef<
 		{...props}
 	/>
 ))
+
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
 const DropdownMenuCheckboxItem = forwardRef<
@@ -111,6 +115,7 @@ const DropdownMenuCheckboxItem = forwardRef<
 		{children}
 	</DropdownMenuPrimitive.CheckboxItem>
 ))
+
 DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName
 
 const DropdownMenuRadioItem = forwardRef<
@@ -133,6 +138,7 @@ const DropdownMenuRadioItem = forwardRef<
 		{children}
 	</DropdownMenuPrimitive.RadioItem>
 ))
+
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
 
 const DropdownMenuLabel = forwardRef<
@@ -147,6 +153,7 @@ const DropdownMenuLabel = forwardRef<
 		{...props}
 	/>
 ))
+
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 
 const DropdownMenuSeparator = forwardRef<
@@ -159,11 +166,13 @@ const DropdownMenuSeparator = forwardRef<
 		{...props}
 	/>
 ))
+
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
 const DropdownMenuShortcut = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => {
 	return <span className={cn('ml-auto text-xs tracking-widest opacity-60', className)} {...props} />
 }
+
 DropdownMenuShortcut.displayName = 'DropdownMenuShortcut'
 
 export {

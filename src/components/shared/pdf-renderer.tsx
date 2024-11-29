@@ -17,6 +17,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 	Input,
+	Separator,
 } from '@/components/ui'
 import { cn } from '@/lib'
 import { useToast } from '@/hooks/use-toast'
@@ -25,7 +26,7 @@ import { PdfFullScreen } from '@/components/shared'
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 interface PdfRendererProps {
 	url: string
@@ -71,7 +72,7 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 
 	return (
 		<div className="w-full bg-white rounded-md shadow flex flex-col items-center">
-			<div className="h-14 w-full border-b border-zinc-200 flex items-center justify-between px-2">
+			<div className="h-14 w-full flex items-center justify-between px-2">
 				<div className="flex items-center gap-1.5">
 					<Button
 						disabled={currPage <= 1}
@@ -85,10 +86,13 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 						<ChevronDown className="h-4 w-4" />
 					</Button>
 
-					<div className="flex items-center gap-1.5">
+					<div className="flex items-center gap-3">
 						<Input
 							{...register('page')}
-							className={cn('w-12 h-8', errors.page && 'focus-visible:ring-red-500')}
+							className={cn(
+								'w-14 h-full leading-none text-center',
+								errors.page && 'focus-visible:ring-red-500',
+							)}
 							onKeyDown={(e) => {
 								if (e.key === 'Enter') {
 									handleSubmit(handlePageSubmit)()
@@ -96,11 +100,9 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 							}}
 						/>
 
-						<p className="text-zinc-700 text-sm space-x-1">
-							<span>/</span>
+						<p className="text-zinc-700 leading-none md:text-sm">/</p>
 
-							<span>{numPages ?? 'x'}</span>
-						</p>
+						<p className="text-zinc-700 leading-none md:text-sm">{numPages ?? 'x'}</p>
 					</div>
 
 					<Button
@@ -146,15 +148,19 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 				</div>
 			</div>
 
+			<Separator />
+
 			<div className="flex-1 w-full max-h-screen">
 				<SimpleBar autoHide={false} className="max-h-[calc(100vh-10rem)]">
 					<div ref={ref}>
 						<Document
+							file={url}
 							loading={
 								<div className="flex justify-center">
 									<Loader2 className="my-24 h-6 w-6 animate-spin" />
 								</div>
 							}
+							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
 							onLoadError={() => {
 								toast({
 									title: 'Error loading PDF',
@@ -162,8 +168,6 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 									variant: 'destructive',
 								})
 							}}
-							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-							file={url}
 							className="max-h-full"
 						>
 							{isLoading && renderedScale ? (

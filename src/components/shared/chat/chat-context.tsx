@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import { ReactNode, createContext, useRef, useState } from 'react'
+import { ChangeEvent, ReactNode, createContext, useRef, useState } from 'react'
 
 import { trpc } from '@/app/_trpc/client'
 import { useToast } from '@/hooks/use-toast'
@@ -11,7 +11,7 @@ type StreamResponse = {
 	message: string
 	isLoading: boolean
 	addMessage: () => void
-	handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+	handleInputChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 export const ChatContext = createContext<StreamResponse>({
@@ -183,7 +183,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 		},
 	})
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setMessage(e.target.value)
 	}
 

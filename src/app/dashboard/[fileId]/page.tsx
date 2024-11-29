@@ -15,7 +15,7 @@ interface DashboardIdPageProps {
 }
 
 const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
-	const { fileId } = params
+	const { fileId } = await params
 
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()

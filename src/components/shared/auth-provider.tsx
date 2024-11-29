@@ -2,7 +2,6 @@
 
 import { httpBatchLink } from '@trpc/client'
 import { PropsWithChildren, Suspense, useState } from 'react'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { absoluteUrl } from '@/lib'
@@ -24,8 +23,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 		<trpc.Provider client={trpcClient} queryClient={queryClient}>
 			<QueryClientProvider client={queryClient}>
 				<Suspense>{children}</Suspense>
-
-				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</trpc.Provider>
 	)

@@ -11,6 +11,7 @@ export {
 } from './dropdown-menu'
 export { Input } from './input'
 export { Progress } from './progress'
+export { Separator } from './separator'
 export { Textarea } from './textarea'
 export {
 	Toast,
@@ -22,4 +23,5 @@ export {
 	ToastViewport,
 } from './toast'
 export type { ToastActionElement, ToastProps } from './toast'
+export { Toaster } from './toaster'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'

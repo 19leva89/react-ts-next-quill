@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
 
 import { cn } from '@/lib'
+import { Toaster } from '@/components/ui'
 import { Navbar, AuthProvider } from '@/components/shared'
 
 import './globals.css'
@@ -21,7 +22,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 		<html lang="en" className="light">
 			<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
 				<AuthProvider>
-					{/* <Toaster /> */}
+					<Toaster />
 
 					<Navbar />
 

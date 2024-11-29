@@ -27,6 +27,7 @@ const DialogOverlay = forwardRef<
 		{...props}
 	/>
 ))
+
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const DialogContent = forwardRef<
@@ -51,11 +52,13 @@ const DialogContent = forwardRef<
 		</DialogPrimitive.Content>
 	</DialogPortal>
 ))
+
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 const DialogHeader = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
 	<div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
 )
+
 DialogHeader.displayName = 'DialogHeader'
 
 const DialogFooter = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
@@ -64,6 +67,7 @@ const DialogFooter = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) =
 		{...props}
 	/>
 )
+
 DialogFooter.displayName = 'DialogFooter'
 
 const DialogTitle = forwardRef<
@@ -76,6 +80,7 @@ const DialogTitle = forwardRef<
 		{...props}
 	/>
 ))
+
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
 const DialogDescription = forwardRef<
@@ -88,6 +93,7 @@ const DialogDescription = forwardRef<
 		{...props}
 	/>
 ))
+
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 export {

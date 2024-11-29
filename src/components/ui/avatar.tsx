@@ -15,6 +15,7 @@ const Avatar = forwardRef<
 		{...props}
 	/>
 ))
+
 Avatar.displayName = AvatarPrimitive.Root.displayName
 
 const AvatarImage = forwardRef<
@@ -23,6 +24,7 @@ const AvatarImage = forwardRef<
 >(({ className, ...props }, ref) => (
 	<AvatarPrimitive.Image ref={ref} className={cn('aspect-square h-full w-full', className)} {...props} />
 ))
+
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 const AvatarFallback = forwardRef<
@@ -35,6 +37,7 @@ const AvatarFallback = forwardRef<
 		{...props}
 	/>
 ))
+
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 export { Avatar, AvatarImage, AvatarFallback }

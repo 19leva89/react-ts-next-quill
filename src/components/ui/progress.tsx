@@ -25,6 +25,7 @@ const Progress = forwardRef<ElementRef<typeof ProgressPrimitive.Root>, ProgressP
 		</ProgressPrimitive.Root>
 	),
 )
+
 Progress.displayName = ProgressPrimitive.Root.displayName
 
 export { Progress }
