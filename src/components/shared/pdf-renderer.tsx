@@ -61,7 +61,7 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 		resolver: zodResolver(CustomPageValidator),
 	})
 
-	console.log(errors)
+	// console.log(errors)
 
 	const { width, ref } = useResizeDetector()
 
@@ -73,15 +73,16 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 	return (
 		<div className="w-full bg-white rounded-md shadow flex flex-col items-center">
 			<div className="h-14 w-full flex items-center justify-between px-2">
-				<div className="flex items-center gap-1.5">
+				<div className="flex items-center gap-2">
 					<Button
+						variant="ghost"
+						aria-label="previous page"
 						disabled={currPage <= 1}
 						onClick={() => {
 							setCurrPage((prev) => (prev - 1 > 1 ? prev - 1 : 1))
 							setValue('page', String(currPage - 1))
 						}}
-						variant="ghost"
-						aria-label="previous page"
+						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<ChevronDown className="h-4 w-4" />
 					</Button>
@@ -106,13 +107,14 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 					</div>
 
 					<Button
+						variant="ghost"
+						aria-label="next page"
 						disabled={numPages === undefined || currPage === numPages}
 						onClick={() => {
 							setCurrPage((prev) => (prev + 1 > numPages! ? numPages! : prev + 1))
 							setValue('page', String(currPage + 1))
 						}}
-						variant="ghost"
-						aria-label="next page"
+						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<ChevronUp className="h-4 w-4" />
 					</Button>
@@ -124,7 +126,7 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 							<Button className="gap-1.5" aria-label="zoom" variant="ghost">
 								<Search className="h-4 w-4" />
 								{scale * 100}%
-								<ChevronDown className="h-3 w-3 opacity-50" />
+								<ChevronDown className="h-3 w-3 opacity-75" />
 							</Button>
 						</DropdownMenuTrigger>
 
@@ -137,9 +139,9 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 					</DropdownMenu>
 
 					<Button
-						onClick={() => setRotation((prev) => prev + 90)}
 						variant="ghost"
 						aria-label="rotate 90 degrees"
+						onClick={() => setRotation((prev) => prev + 90)}
 					>
 						<RotateCw className="h-4 w-4" />
 					</Button>
@@ -170,29 +172,18 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 							}}
 							className="max-h-full"
 						>
-							{isLoading && renderedScale ? (
-								<Page
-									width={width ? width : 1}
-									pageNumber={currPage}
-									scale={scale}
-									rotate={rotation}
-									key={'@' + renderedScale}
-								/>
-							) : null}
-
 							<Page
-								className={cn(isLoading ? 'hidden' : '')}
-								width={width ? width : 1}
+								width={width || 1}
 								pageNumber={currPage}
 								scale={scale}
 								rotate={rotation}
-								key={'@' + scale}
 								loading={
 									<div className="flex justify-center">
 										<Loader2 className="my-24 h-6 w-6 animate-spin" />
 									</div>
 								}
 								onRenderSuccess={() => setRenderedScale(scale)}
+								className={isLoading && !renderedScale ? 'hidden' : ''}
 							/>
 						</Document>
 					</div>

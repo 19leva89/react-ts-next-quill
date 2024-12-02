@@ -8,13 +8,14 @@ import { useResizeDetector } from 'react-resize-detector'
 import SimpleBar from 'simplebar-react'
 
 import { useToast } from '@/hooks/use-toast'
-import { Button, Dialog, DialogContent, DialogTrigger } from '@/components/ui'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui'
 
-interface PdfFullscreenProps {
+interface PdfFullScreenProps {
 	fileUrl: string
 }
 
-export const PdfFullScreen = ({ fileUrl }: PdfFullscreenProps) => {
+export const PdfFullScreen = ({ fileUrl }: PdfFullScreenProps) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [numPages, setNumPages] = useState<number>()
 
@@ -25,9 +26,9 @@ export const PdfFullScreen = ({ fileUrl }: PdfFullscreenProps) => {
 	return (
 		<Dialog
 			open={isOpen}
-			onOpenChange={(v) => {
-				if (!v) {
-					setIsOpen(v)
+			onOpenChange={(visible) => {
+				if (!visible) {
+					setIsOpen(visible)
 				}
 			}}
 		>
@@ -37,10 +38,15 @@ export const PdfFullScreen = ({ fileUrl }: PdfFullscreenProps) => {
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="max-w-7xl w-full">
+			<DialogContent className="max-w-7xl w-full" aria-describedby={undefined}>
+				<VisuallyHidden asChild>
+					<DialogTitle>PDF Document Viewer</DialogTitle>
+				</VisuallyHidden>
+
 				<SimpleBar autoHide={false} className="max-h-[calc(100vh-10rem)] mt-6">
 					<div ref={ref}>
 						<Document
+							file={fileUrl}
 							loading={
 								<div className="flex justify-center">
 									<Loader2 className="my-24 h-6 w-6 animate-spin" />
@@ -54,7 +60,6 @@ export const PdfFullScreen = ({ fileUrl }: PdfFullscreenProps) => {
 								})
 							}}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-							file={fileUrl}
 							className="max-h-full"
 						>
 							{new Array(numPages).fill(0).map((_, i) => (

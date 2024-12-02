@@ -8,7 +8,8 @@ import { Cloud, File, Loader2 } from 'lucide-react'
 import { useUploadThing } from '@/lib'
 import { trpc } from '@/app/_trpc/client'
 import { useToast } from '@/hooks/use-toast'
-import { Button, Dialog, DialogContent, DialogTrigger, Progress } from '@/components/ui'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, Progress } from '@/components/ui'
 
 const UploadDropzone = () =>
 	// { isSubscribed }: { isSubscribed: boolean }
@@ -159,7 +160,11 @@ export const UploadButton = () =>
 					<Button>Upload PDF</Button>
 				</DialogTrigger>
 
-				<DialogContent>
+				<DialogContent aria-describedby={undefined}>
+					<VisuallyHidden asChild>
+						<DialogTitle>PDF Document Upload</DialogTitle>
+					</VisuallyHidden>
+
 					<UploadDropzone
 					// isSubscribed={isSubscribed}
 					/>

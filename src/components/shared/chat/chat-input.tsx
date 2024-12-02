@@ -24,7 +24,6 @@ export const ChatInput = ({ isDisabled }: ChatInputProps) => {
 							<Textarea
 								rows={1}
 								ref={textareaRef}
-								// maxRows={4}
 								autoFocus
 								onChange={handleInputChange}
 								value={message}
@@ -43,7 +42,7 @@ export const ChatInput = ({ isDisabled }: ChatInputProps) => {
 
 							<Button
 								disabled={isLoading || isDisabled}
-								className="absolute bottom-1.5 right-[8px]"
+								className="absolute bottom-1.5 right-[8px] disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 								aria-label="send message"
 								onClick={() => {
 									addMessage()
