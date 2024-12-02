@@ -1,6 +1,7 @@
 'use server'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
@@ -17,7 +18,7 @@ export const Navbar = async () => {
 				<MaxWidthWrapper>
 					<div className="flex h-14 items-center justify-between">
 						<Link href="/" className="flex z-40 font-semibold">
-							<span>Quill</span>
+							<Image src="/svg/quill-logo.svg" alt="quill" width={56} height={32} />
 						</Link>
 
 						{/* todo: add mobile navbar */}
