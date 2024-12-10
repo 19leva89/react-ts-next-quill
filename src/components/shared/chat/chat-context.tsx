@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import { ChangeEvent, ReactNode, createContext, useRef, useState } from 'react'
+import { ChangeEvent, createContext, ReactNode, useRef, useState } from 'react'
 
 import { trpc } from '@/app/_trpc/client'
 import { useToast } from '@/hooks/use-toast'
@@ -13,20 +13,19 @@ type StreamResponse = {
 	addMessage: () => void
 	handleInputChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
 }
-
-export const ChatContext = createContext<StreamResponse>({
-	addMessage: () => {},
-	message: '',
-	handleInputChange: () => {},
-	isLoading: false,
-})
-
-interface Props {
+interface ChatContextProviderProps {
 	fileId: string
 	children: ReactNode
 }
 
-export const ChatContextProvider = ({ fileId, children }: Props) => {
+export const ChatContext = createContext<StreamResponse>({
+	message: '',
+	isLoading: false,
+	addMessage: () => {},
+	handleInputChange: () => {},
+})
+
+export const ChatContextProvider = ({ fileId, children }: ChatContextProviderProps) => {
 	const [message, setMessage] = useState<string>('')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -52,6 +51,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 
 			return response.body
 		},
+
 		onMutate: async ({ message }) => {
 			backupMessage.current = message
 			setMessage('')
@@ -99,6 +99,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 				previousMessages: previousMessages?.pages.flatMap((page) => page.messages) ?? [],
 			}
 		},
+
 		onSuccess: async (stream) => {
 			setIsLoading(false)
 
@@ -176,6 +177,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 			setMessage(backupMessage.current)
 			utils.getFileMessages.setData({ fileId }, { messages: context?.previousMessages ?? [] })
 		},
+
 		onSettled: async () => {
 			setIsLoading(false)
 
@@ -192,10 +194,10 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 	return (
 		<ChatContext.Provider
 			value={{
-				addMessage,
 				message,
-				handleInputChange,
 				isLoading,
+				addMessage,
+				handleInputChange,
 			}}
 		>
 			{children}

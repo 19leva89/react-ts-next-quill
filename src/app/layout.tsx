@@ -4,7 +4,8 @@ import { PropsWithChildren } from 'react'
 
 import { cn } from '@/lib'
 import { Toaster } from '@/components/ui'
-import { Navbar, AuthProvider } from '@/components/shared'
+import { AuthProvider } from '@/components/shared'
+import { Navbar } from '@/components/shared/navbar'
 
 import './globals.css'
 import 'simplebar-react/dist/simplebar.min.css'

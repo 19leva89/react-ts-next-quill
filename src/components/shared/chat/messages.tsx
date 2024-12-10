@@ -7,8 +7,8 @@ import { useContext, useEffect, useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
 
 import { trpc } from '@/app/_trpc/client'
-import { ChatContext, Message } from '@/components/shared/chat'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
+import { ChatContext, Message } from '@/components/shared/chat'
 
 interface MessagesProps {
 	fileId: string
@@ -23,9 +23,9 @@ export const Messages = ({ fileId }: MessagesProps) => {
 			limit: INFINITE_QUERY_LIMIT,
 		},
 		{
-			getNextPageParam: (lastPage) => lastPage?.nextCursor,
+			getNextPageParam: (lastPage: { nextCursor?: string | null }) => lastPage?.nextCursor,
 			keepPreviousData: true,
-		},
+		} as any,
 	)
 
 	const messages = data?.pages.flatMap((page) => page.messages)

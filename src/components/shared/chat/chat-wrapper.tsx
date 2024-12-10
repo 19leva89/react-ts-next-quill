@@ -3,27 +3,31 @@
 import Link from 'next/link'
 import { ChevronLeft, Loader2, XCircle } from 'lucide-react'
 
+import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
+import { UploadStatus } from '@prisma/client'
 import { buttonVariants } from '@/components/ui'
 import { ChatContextProvider, ChatInput, Messages } from '@/components/shared/chat'
 
-// import { PLANS } from '@/config/stripe'
-
 interface ChatWrapperProps {
 	fileId: string
-	// isSubscribed: boolean
+	isSubscribed: boolean
 }
 
-export const ChatWrapper = ({
-	fileId,
-	// isSubscribed
-}: ChatWrapperProps) => {
+export const ChatWrapper = ({ fileId, isSubscribed }: ChatWrapperProps) => {
 	const { data, isLoading } = trpc.getFileUploadStatus.useQuery(
 		{
 			fileId,
 		},
 		{
-			refetchInterval: (data) => (data?.status === 'SUCCESS' || data?.status === 'FAILED' ? false : 500),
+			refetchInterval: (data) => {
+				const dataAsUnknown = data as unknown
+
+				return (dataAsUnknown as { status: UploadStatus }).status === UploadStatus.SUCCESS ||
+					(dataAsUnknown as { status: UploadStatus }).status === UploadStatus.FAILED
+					? false
+					: 500
+			},
 		},
 	)
 
@@ -44,7 +48,7 @@ export const ChatWrapper = ({
 			</div>
 		)
 
-	if (data?.status === 'PROCESSING')
+	if (data?.status === UploadStatus.PROCESSING)
 		return (
 			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
 				<div className="flex-1 flex justify-center items-center flex-col mb-40 mt-4">
@@ -61,7 +65,7 @@ export const ChatWrapper = ({
 			</div>
 		)
 
-	if (data?.status === 'FAILED')
+	if (data?.status === UploadStatus.FAILED)
 		return (
 			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
 				<div className="flex-1 flex justify-center items-center flex-col mb-40 mt-4">
@@ -71,10 +75,10 @@ export const ChatWrapper = ({
 						<h3 className="font-semibold text-xl">Too many pages in PDF</h3>
 
 						<p className="text-zinc-500 text-sm">
-							{/* Your <span className="font-medium">{isSubscribed ? 'Pro' : 'Free'}</span> plan supports up to{' '}
+							Your <span className="font-medium">{isSubscribed ? 'Pro' : 'Free'}</span> plan supports up to{' '}
 							{isSubscribed
 								? PLANS.find((p) => p.name === 'Pro')?.pagesPerPdf
-								: PLANS.find((p) => p.name === 'Free')?.pagesPerPdf}{' '} */}
+								: PLANS.find((p) => p.name === 'Free')?.pagesPerPdf}{' '}
 							pages per PDF
 						</p>
 

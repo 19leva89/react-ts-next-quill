@@ -1,10 +1,11 @@
-'use server'
+// 'use server'
 
 import { redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
-import { Dashboard } from '@/components/shared'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { Dashboard } from '@/components/shared/dashboard'
 
 const DashboardPage = async () => {
 	const { getUser } = getKindeServerSession()
@@ -25,9 +26,9 @@ const DashboardPage = async () => {
 		return redirect('/auth-callback?origin=dashboard')
 	}
 
-	// const subscriptionPlan = await getUserSubscriptionPlan()
+	const subscriptionPlan = await getUserSubscriptionPlan()
 
-	return <Dashboard />
+	return <Dashboard subscriptionPlan={subscriptionPlan} />
 }
 
 export default DashboardPage

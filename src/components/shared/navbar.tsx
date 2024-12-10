@@ -5,8 +5,9 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
+import { MaxWidthWrapper } from '@/components/shared'
 import { buttonVariants, Separator } from '@/components/ui'
-import { MaxWidthWrapper, UserAccountNav } from '@/components/shared'
+import { UserAccountNav } from '@/components/shared/user-account-nav'
 
 export const Navbar = async () => {
 	const { getUser } = getKindeServerSession()
@@ -18,7 +19,7 @@ export const Navbar = async () => {
 				<MaxWidthWrapper>
 					<div className="flex h-14 items-center justify-between">
 						<Link href="/" className="flex z-40 font-semibold">
-							<Image src="/svg/quill-logo.svg" alt="quill" width={56} height={32} />
+							<Image src="/svg/quill-logo.svg" alt="quill" width={56} height={32} priority />
 						</Link>
 
 						{/* todo: add mobile navbar */}

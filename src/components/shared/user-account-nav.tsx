@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-// import { Gem } from 'lucide-react'
+import { Gem } from 'lucide-react'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import {
@@ -16,7 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui'
 import { Icons } from '@/components/shared'
-// import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 interface UserAccountNavProps {
 	email: string | undefined
@@ -25,7 +25,7 @@ interface UserAccountNavProps {
 }
 
 export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavProps) => {
-	// const subscriptionPlan = await getUserSubscriptionPlan()
+	const subscriptionPlan = await getUserSubscriptionPlan()
 
 	return (
 		<DropdownMenu>
@@ -63,14 +63,13 @@ export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavPr
 				</DropdownMenuItem>
 
 				<DropdownMenuItem asChild>
-					<Link href="/dashboard/billing">Manage Subscription</Link>
-					{/* {subscriptionPlan?.isSubscribed ? (
+					{subscriptionPlan?.isSubscribed ? (
 						<Link href="/dashboard/billing">Manage Subscription</Link>
 					) : (
 						<Link href="/pricing">
 							Upgrade <Gem className="text-blue-600 h-4 w-4 ml-1.5" />
 						</Link>
-					)} */}
+					)}
 				</DropdownMenuItem>
 
 				<DropdownMenuSeparator />

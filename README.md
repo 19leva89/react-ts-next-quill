@@ -1,3 +1,9 @@
+AI (Artificial Intelligence) tools:
+- AI (message generation)
+- LangChain (AI framework)
+- OpenAI (creating AI models)
+- Pinecone (vector database)
+
 Authentication and User Management:
 - Kinde (authentication)
 
@@ -14,6 +20,7 @@ Data Fetching and State Management:
 
 Form and Validation:
 - React Hook Form (working with forms)
+- React Textarea Autosize (working with textareas)
 - Zod (first schema validation)
 
 Image Handling and Optimization:

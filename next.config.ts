@@ -16,12 +16,20 @@ const nextConfig: NextConfig = {
 		]
 	},
 
-	// webpack: (config) => {
-	// 	config.resolve.alias = {
-	// 		...config.resolve.alias,
-	// 		canvas: false,
-	// 		encoding: false,
+	reactStrictMode: false,
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	// webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+	// 	if (!isServer) {
+	// 		config.resolve.fallback = {
+	// 			...config.resolve.fallback,
+	// 			fs: false, // Отключаем обработку fs для клиентской стороны
+	// 		}
 	// 	}
+
+	// 	config.resolve.alias.canvas = false
+	// 	config.resolve.alias.encoding = false
+
 	// 	return config
 	// },
 }

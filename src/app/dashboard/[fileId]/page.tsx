@@ -1,17 +1,13 @@
-'use server'
-
 import { notFound, redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
-import { PdfRenderer } from '@/components/shared'
 import { ChatWrapper } from '@/components/shared/chat'
-// import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { PDFViewer } from '@/components/shared/pdf-viewer'
 
 interface DashboardIdPageProps {
-	params: {
-		fileId: string
-	}
+	params: Promise<{ fileId: string }>
 }
 
 const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
@@ -31,7 +27,7 @@ const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
 
 	if (!file) notFound()
 
-	// const plan = await getUserSubscriptionPlan()
+	const plan = await getUserSubscriptionPlan()
 
 	return (
 		<div className="flex-1 justify-between flex flex-col h-[calc(100vh-3.5rem)]">
@@ -40,15 +36,12 @@ const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
 				<div className="flex-1 xl:flex">
 					<div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
 						{/* Main area */}
-						<PdfRenderer url={file.url} />
+						<PDFViewer url={file.url} />
 					</div>
 				</div>
 
 				<div className="shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
-					<ChatWrapper
-						// isSubscribed={plan.isSubscribed}
-						fileId={file.id}
-					/>
+					<ChatWrapper isSubscribed={plan.isSubscribed} fileId={file.id} />
 				</div>
 			</div>
 		</div>

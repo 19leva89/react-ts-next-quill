@@ -4,10 +4,11 @@ import { privateProcedure, publicProcedure, router } from './trpc'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
-// import { absoluteUrl } from '@/lib'
-// import { PLANS } from '@/config/stripe'
-// import { getUserSubscriptionPlan, stripe } from '@/lib/stripe'
+import { absoluteUrl } from '@/lib'
+import { PLANS } from '@/config/stripe'
+import { UploadStatus } from '@prisma/client'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
+import { getUserSubscriptionPlan, stripe } from '@/lib/stripe'
 
 export const appRouter = router({
 	authCallback: publicProcedure.query(async () => {
@@ -18,7 +19,10 @@ export const appRouter = router({
 
 			// User ID or email is missing
 			if (!user.id || !user.email) {
-				throw new TRPCError({ code: 'UNAUTHORIZED' })
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: 'User ID or email is missing.',
+				})
 			}
 
 			// Checking the existence of a user in the database
@@ -57,6 +61,13 @@ export const appRouter = router({
 	getUserFiles: privateProcedure.query(async ({ ctx }) => {
 		const { userId } = ctx
 
+		if (!userId) {
+			throw new TRPCError({
+				code: 'UNAUTHORIZED',
+				message: 'User not authenticated',
+			})
+		}
+
 		return await prisma.file.findMany({
 			where: {
 				userId,
@@ -64,51 +75,56 @@ export const appRouter = router({
 		})
 	}),
 
-	// createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
-	// 	const { userId } = ctx
+	createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
+		const { userId } = ctx
 
-	// 	const billingUrl = absoluteUrl('/dashboard/billing')
+		const billingUrl = absoluteUrl('/dashboard/billing')
 
-	// 	if (!userId) throw new TRPCError({ code: 'UNAUTHORIZED' })
+		if (!userId) {
+			throw new TRPCError({
+				code: 'UNAUTHORIZED',
+				message: 'User not authenticated',
+			})
+		}
 
-	// 	const dbUser = await prisma.user.findFirst({
-	// 		where: {
-	// 			id: userId,
-	// 		},
-	// 	})
+		const dbUser = await prisma.user.findFirst({
+			where: {
+				id: userId,
+			},
+		})
 
-	// 	if (!dbUser) throw new TRPCError({ code: 'UNAUTHORIZED' })
+		if (!dbUser) throw new TRPCError({ code: 'UNAUTHORIZED' })
 
-	// 	const subscriptionPlan = await getUserSubscriptionPlan()
+		const subscriptionPlan = await getUserSubscriptionPlan()
 
-	// 	if (subscriptionPlan.isSubscribed && dbUser.stripeCustomerId) {
-	// 		const stripeSession = await stripe.billingPortal.sessions.create({
-	// 			customer: dbUser.stripeCustomerId,
-	// 			return_url: billingUrl,
-	// 		})
+		if (subscriptionPlan.isSubscribed && dbUser.stripeCustomerId) {
+			const stripeSession = await stripe.billingPortal.sessions.create({
+				customer: dbUser.stripeCustomerId,
+				return_url: billingUrl,
+			})
 
-	// 		return { url: stripeSession.url }
-	// 	}
+			return { url: stripeSession.url }
+		}
 
-	// 	const stripeSession = await stripe.checkout.sessions.create({
-	// 		success_url: billingUrl,
-	// 		cancel_url: billingUrl,
-	// 		payment_method_types: ['card', 'paypal'],
-	// 		mode: 'subscription',
-	// 		billing_address_collection: 'auto',
-	// 		line_items: [
-	// 			{
-	// 				price: PLANS.find((plan) => plan.name === 'Pro')?.price.priceIds.test,
-	// 				quantity: 1,
-	// 			},
-	// 		],
-	// 		metadata: {
-	// 			userId: userId,
-	// 		},
-	// 	})
+		const stripeSession = await stripe.checkout.sessions.create({
+			success_url: billingUrl,
+			cancel_url: billingUrl,
+			payment_method_types: ['card', 'paypal'],
+			mode: 'subscription',
+			billing_address_collection: 'auto',
+			line_items: [
+				{
+					price: PLANS.find((plan) => plan.name === 'Pro')?.price.priceIds.test,
+					quantity: 1,
+				},
+			],
+			metadata: {
+				userId: userId,
+			},
+		})
 
-	// 	return { url: stripeSession.url }
-	// }),
+		return { url: stripeSession.url }
+	}),
 
 	getFileMessages: privateProcedure
 		.input(
@@ -130,7 +146,12 @@ export const appRouter = router({
 				},
 			})
 
-			if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
+			if (!file) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'File not found.',
+				})
+			}
 
 			const messages = await prisma.message.findMany({
 				take: limit + 1,
@@ -173,11 +194,14 @@ export const appRouter = router({
 
 			if (!file) return { status: 'PENDING' as const }
 
-			return { status: file.uploadStatus }
+			return { status: file.uploadStatus as UploadStatus }
 		}),
 
 	getFile: privateProcedure.input(z.object({ key: z.string() })).mutation(async ({ ctx, input }) => {
 		const { userId } = ctx
+
+		// Логирование для отладки
+		console.log('Searching for file with key:', input.key, 'and userId:', userId)
 
 		const file = await prisma.file.findFirst({
 			where: {
@@ -186,7 +210,14 @@ export const appRouter = router({
 			},
 		})
 
-		if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
+		if (!file) {
+			console.error('File not found:', input.key)
+
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: `File with key "${input.key}" not found.`,
+			})
+		}
 
 		return file
 	}),
@@ -201,7 +232,12 @@ export const appRouter = router({
 			},
 		})
 
-		if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
+		if (!file) {
+			throw new TRPCError({
+				code: 'NOT_FOUND',
+				message: `File with ID "${input.id}" not found.`,
+			})
+		}
 
 		await prisma.file.delete({
 			where: {

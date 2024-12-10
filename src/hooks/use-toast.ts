@@ -1,5 +1,4 @@
 // Inspired by react-hot-toast library
-'use client'
 
 import { ReactNode, useEffect, useState } from 'react'
 

@@ -21,18 +21,21 @@ import {
 } from '@/components/ui'
 import { cn } from '@/lib'
 import { useToast } from '@/hooks/use-toast'
-import { PdfFullScreen } from '@/components/shared'
+import { PdfFullScreen } from '@/components/shared/pdf-full-screen'
 
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
+console.log('pdfjs.version', pdfjs.version)
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
+// pdfjs.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@4.4.168/legacy/build/pdf.worker.min.mjs'
+// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`
 
-interface PdfRendererProps {
+interface PDFViewerProps {
 	url: string
 }
 
-export const PdfRenderer = ({ url }: PdfRendererProps) => {
+export const PDFViewer = ({ url }: PDFViewerProps) => {
 	const { toast } = useToast()
 
 	const [scale, setScale] = useState<number>(1)
@@ -40,6 +43,8 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 	const [currPage, setCurrPage] = useState<number>(1)
 	const [rotation, setRotation] = useState<number>(0)
 	const [renderedScale, setRenderedScale] = useState<number | null>(null)
+
+	const zoomOptions = [100, 150, 200, 250]
 
 	const isLoading = renderedScale !== scale
 
@@ -70,6 +75,16 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 		setValue('page', String(page))
 	}
 
+	const handleNextPage = () => {
+		setCurrPage((prev) => (prev + 1 > numPages! ? numPages! : prev + 1))
+		setValue('page', String(currPage + 1))
+	}
+
+	const handlePrevPage = () => {
+		setCurrPage((prev) => (prev - 1 > 1 ? prev - 1 : 1))
+		setValue('page', String(currPage - 1))
+	}
+
 	return (
 		<div className="w-full bg-white rounded-md shadow flex flex-col items-center">
 			<div className="h-14 w-full flex items-center justify-between px-2">
@@ -77,11 +92,8 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 					<Button
 						variant="ghost"
 						aria-label="previous page"
+						onClick={handlePrevPage}
 						disabled={currPage <= 1}
-						onClick={() => {
-							setCurrPage((prev) => (prev - 1 > 1 ? prev - 1 : 1))
-							setValue('page', String(currPage - 1))
-						}}
 						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<ChevronDown className="h-4 w-4" />
@@ -109,11 +121,8 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 					<Button
 						variant="ghost"
 						aria-label="next page"
+						onClick={handleNextPage}
 						disabled={numPages === undefined || currPage === numPages}
-						onClick={() => {
-							setCurrPage((prev) => (prev + 1 > numPages! ? numPages! : prev + 1))
-							setValue('page', String(currPage + 1))
-						}}
 						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<ChevronUp className="h-4 w-4" />
@@ -131,10 +140,11 @@ export const PdfRenderer = ({ url }: PdfRendererProps) => {
 						</DropdownMenuTrigger>
 
 						<DropdownMenuContent>
-							<DropdownMenuItem onSelect={() => setScale(1)}>100%</DropdownMenuItem>
-							<DropdownMenuItem onSelect={() => setScale(1.5)}>150%</DropdownMenuItem>
-							<DropdownMenuItem onSelect={() => setScale(2)}>200%</DropdownMenuItem>
-							<DropdownMenuItem onSelect={() => setScale(2.5)}>250%</DropdownMenuItem>
+							{zoomOptions.map((zoom) => (
+								<DropdownMenuItem key={zoom} onSelect={() => setScale(zoom / 100)}>
+									{zoom}%
+								</DropdownMenuItem>
+							))}
 						</DropdownMenuContent>
 					</DropdownMenu>
 

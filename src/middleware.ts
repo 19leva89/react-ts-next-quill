@@ -1,4 +1,4 @@
-'use server'
+// 'use server'
 
 import { authMiddleware } from '@kinde-oss/kinde-auth-nextjs/server'
 
