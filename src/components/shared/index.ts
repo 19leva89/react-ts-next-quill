@@ -1,5 +1,5 @@
 export * from './chat'
-export { AuthProvider } from './auth-provider'
+// export { AuthProvider } from './auth-provider'
 export { Icons } from './icons'
 export { MaxWidthWrapper } from './max-width-wrapper'
 // export { UploadButton } from './upload-button'

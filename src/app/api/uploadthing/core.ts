@@ -7,7 +7,6 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
 import { PLANS } from '@/config/stripe'
-import { UploadStatus } from '@prisma/client'
 import { getPineconeClient } from '@/lib/pinecone'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 
@@ -17,15 +16,31 @@ const middleware = async () => {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
 
-	if (!user || !user.id) throw new TRPCError({ code: 'UNAUTHORIZED' })
-	console.log('User ID:', user.id)
+	if (!user || !user.id) {
+		console.error('User not authenticated')
+
+		throw new TRPCError({ code: 'UNAUTHORIZED' })
+	}
+
+	console.log('User authenticated:', user.id)
 
 	const subscriptionPlan = await getUserSubscriptionPlan()
-	console.log('subscriptionPlan', subscriptionPlan)
+	console.log('User subscription plan:', subscriptionPlan)
 
 	return {
 		subscriptionPlan,
 		userId: user.id,
+	}
+}
+
+const updateFileStatus = async (fileId: string, status: 'FAILED' | 'SUCCESS') => {
+	try {
+		await prisma.file.update({
+			data: { uploadStatus: status },
+			where: { id: fileId },
+		})
+	} catch (error) {
+		console.error(`Failed to update file status to ${status} for file ID ${fileId}:`, error)
 	}
 }
 
@@ -40,33 +55,44 @@ const onUploadComplete = async ({
 		url: string
 	}
 }) => {
-	// Проверка на существование файла в базе данных
-	const isFileExist = await prisma.file.findFirst({
-		where: {
-			key: file.key,
-		},
-	})
-	console.log('Файл уже существует:', isFileExist)
-
-	// Если файл уже существует, выходим
-	if (isFileExist) return
-
-	console.log('Generated file URL:', file.url)
-	console.log('User ID:', metadata.userId)
-
-	// Создание записи в базе данных
-	const createdFile = await prisma.file.create({
-		data: {
-			key: file.key,
-			name: file.name,
-			userId: metadata.userId,
-			url: file.url,
-			uploadStatus: UploadStatus.PROCESSING,
-		},
-	})
-	console.log('Файл успешно создан:', createdFile)
+	let createdFile: { id: string } | null = null
 
 	try {
+		// Проверка на существование файла в базе данных
+		const isFileExist = await prisma.file.findUnique({
+			where: {
+				key: file.key,
+			},
+		})
+
+		// Если файл уже существует, выходим
+		if (isFileExist) {
+			console.log('A file with this key already exists:', file.key)
+			return
+		}
+
+		console.log('Generated file URL:', file.url)
+		console.log('User ID:', metadata.userId)
+
+		// Проверка наличия всех необходимых данных
+		if (!file.key || !file.name || !metadata.userId || !file.url) {
+			console.error('Missing data for file creation:', { file, metadata })
+			return
+		}
+
+		// Создание записи в базе данных
+		createdFile = await prisma.file.create({
+			data: {
+				key: file.key,
+				name: file.name,
+				userId: metadata.userId,
+				url: file.url,
+				uploadStatus: 'PROCESSING',
+			},
+		})
+
+		console.log('File created successfully:', createdFile)
+
 		// Загрузка PDF файла
 		const response = await fetch(file.url)
 		const blob = await response.blob()
@@ -74,25 +100,25 @@ const onUploadComplete = async ({
 		// Инициализация PDF загрузчика и обработка документа
 		const loader = new PDFLoader(blob)
 		const pageLevelDocs = await loader.load()
-		console.log('Количество документов для обработки:', pageLevelDocs.length)
+		console.log('Document pages:', pageLevelDocs.length)
+
+		const proPlan = PLANS.find((plan) => plan.name === 'Pro')
+		const freePlan = PLANS.find((plan) => plan.name === 'Free')
+		if (!proPlan || !freePlan) {
+			throw new Error('Subscription plans are not configured.')
+		}
 
 		const pagesAmount = pageLevelDocs.length
+		const { isSubscribed } = metadata.subscriptionPlan
 
-		const { subscriptionPlan } = metadata
-		const { isSubscribed } = subscriptionPlan
-
-		const isProExceeded = pagesAmount > PLANS.find((plan) => plan.name === 'Pro')!.pagesPerPdf
-		const isFreeExceeded = pagesAmount > PLANS.find((plan) => plan.name === 'Free')!.pagesPerPdf
-
-		if ((isSubscribed && isProExceeded) || (!isSubscribed && isFreeExceeded)) {
-			await prisma.file.update({
-				data: {
-					uploadStatus: UploadStatus.FAILED,
-				},
-				where: {
-					id: createdFile.id,
-				},
-			})
+		if (
+			(isSubscribed && pagesAmount > proPlan.pagesPerPdf) ||
+			(!isSubscribed && pagesAmount > freePlan.pagesPerPdf)
+		) {
+			if (createdFile) {
+				await updateFileStatus(createdFile.id, 'FAILED')
+			}
+			return
 		}
 
 		// Инициализация Pinecone клиента и индекса
@@ -121,23 +147,17 @@ const onUploadComplete = async ({
 		console.log('Документы успешно обработаны.')
 
 		// Обновление статуса файла на успешную загрузку
-		await prisma.file.update({
-			data: {
-				uploadStatus: UploadStatus.SUCCESS,
-			},
-			where: {
-				id: createdFile.id,
-			},
-		})
-	} catch {
-		await prisma.file.update({
-			data: {
-				uploadStatus: UploadStatus.FAILED,
-			},
-			where: {
-				id: createdFile.id,
-			},
-		})
+		if (createdFile) {
+			await updateFileStatus(createdFile.id, 'SUCCESS')
+		}
+	} catch (error) {
+		console.error('Error processing file:', error)
+
+		if (createdFile) {
+			await updateFileStatus(createdFile.id, 'FAILED')
+		} else {
+			console.error('File creation failed, cannot update status.')
+		}
 	}
 }
 

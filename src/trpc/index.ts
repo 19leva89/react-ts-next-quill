@@ -210,9 +210,9 @@ export const appRouter = router({
 			},
 		})
 
-		if (!file) {
-			console.error('File not found:', input.key)
+		console.log('DB query result:', file)
 
+		if (!file) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
 				message: `File with key "${input.key}" not found.`,

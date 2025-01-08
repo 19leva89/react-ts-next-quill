@@ -18,7 +18,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 	const [uploadProgress, setUploadProgress] = useState<number>(0)
 
 	const { toast } = useToast()
-	const { mutate: startPolling, data, error } = trpc.getFile.useMutation()
+	const { mutateAsync, data, error } = trpc.getFile.useMutation()
 	const { startUpload } = useUploadThing(isSubscribed ? 'proPlanUploader' : 'freePlanUploader')
 
 	const startSimulatedProgress = () => {
@@ -50,37 +50,44 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 	return (
 		<Dropzone
 			multiple={false}
-			onDrop={async (acceptedFile) => {
+			onDrop={(acceptedFile) => {
 				setIsUploading(true)
 
 				const progressInterval = startSimulatedProgress()
 
+				console.log('Accepted file:', acceptedFile)
 				// handle file uploading
-				const res = await startUpload(acceptedFile)
-				if (!res || !res[0]?.key) {
-					return toast({
-						title: 'Upload failed',
-						description: 'Try again',
-						variant: 'destructive',
-					})
-				}
+				startUpload(acceptedFile).then((res) => {
+					console.log('Upload result:', res)
+					if (!res || res.length === 0) {
+						console.error('Upload failed: no response')
 
-				const [fileResponse] = res
+						return toast({
+							title: 'Upload failed',
+							description: 'Try again',
+							variant: 'destructive',
+						})
+					}
 
-				const key = fileResponse?.key
-				console.log('File uploaded with key:', key)
-				if (!key) {
-					return toast({
-						title: 'Something went wrong',
-						description: 'Please try again later',
-						variant: 'destructive',
-					})
-				}
+					const fileResponse = res?.[0]
 
-				clearInterval(progressInterval)
-				setUploadProgress(100)
+					const key = fileResponse?.key
+					console.log('File uploaded with key:', key)
+					if (!key) {
+						return toast({
+							title: 'Something went wrong',
+							description: 'Please try again later',
+							variant: 'destructive',
+						})
+					}
 
-				startPolling({ key })
+					clearInterval(progressInterval)
+					setUploadProgress(100)
+
+					// setTimeout(() => {
+					mutateAsync({ key })
+					// }, 10000)
+				})
 			}}
 		>
 			{({ getRootProps, getInputProps, acceptedFiles }) => (

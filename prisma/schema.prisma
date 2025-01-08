@@ -35,7 +35,7 @@ model File {
   uploadStatus UploadStatus @default(PENDING)
   //
   url          String
-  key          String
+  key          String       @unique
   messages     Message[]
   //
   createdAt    DateTime     @default(now())
