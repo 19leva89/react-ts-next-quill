@@ -45,7 +45,7 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 				}),
 			})
 
-			if (!response.ok) {
+			if (!response.ok || !response.body) {
 				throw new Error('Failed to send message')
 			}
 
@@ -56,13 +56,13 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 			backupMessage.current = message
 			setMessage('')
 
-			// step 1
+			// Cancel ongoing queries
 			await utils.getFileMessages.cancel()
 
-			// step 2
+			// Cache the previous messages
 			const previousMessages = utils.getFileMessages.getInfiniteData()
 
-			// step 3
+			// Optimistically update the cache with the user's message
 			utils.getFileMessages.setInfiniteData({ fileId, limit: INFINITE_QUERY_LIMIT }, (old) => {
 				if (!old) {
 					return {
@@ -72,7 +72,6 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 				}
 
 				let newPages = [...old.pages]
-
 				let latestPage = newPages[0]!
 
 				latestPage.messages = [
@@ -115,17 +114,15 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 			const decoder = new TextDecoder()
 			let done = false
 
-			// accumulated response
-			let accResponse = ''
-
+			let accResponse = '' // Accumulated response
 			while (!done) {
 				const { value, done: doneReading } = await reader.read()
 				done = doneReading
-				const chunkValue = decoder.decode(value)
 
+				const chunkValue = decoder.decode(value) // Декодируем чанки
 				accResponse += chunkValue
 
-				// append chunk to the actual message
+				// Make sure you are sending text only:
 				utils.getFileMessages.setInfiniteData({ fileId, limit: INFINITE_QUERY_LIMIT }, (old) => {
 					if (!old) return { pages: [], pageParams: [] }
 
@@ -141,7 +138,7 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 								updatedMessages = [
 									{
 										id: 'ai-response',
-										text: accResponse,
+										text: accResponse, // Send text
 										isUserMessage: false,
 										createdAt: new Date().toISOString(),
 									},
@@ -152,7 +149,7 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 									if (message.id === 'ai-response') {
 										return {
 											...message,
-											text: accResponse,
+											text: accResponse, // Send text
 										}
 									}
 									return message

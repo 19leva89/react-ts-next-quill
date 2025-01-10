@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { NextRequest } from 'next/server'
 import { PineconeStore } from '@langchain/pinecone'
 import { OpenAIEmbeddings } from '@langchain/openai'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/db'
@@ -99,33 +100,30 @@ export const POST = async (req: NextRequest) => {
 		`
 
 	try {
-		const completion = await openai.chat.completions.create({
+		const response = await openai.chat.completions.create({
 			model: 'gpt-3.5-turbo',
-			// model: 'gpt-4o-mini',
 			temperature: 0.2,
+			stream: true,
 			messages: [
 				{ role: 'system', content: 'Answer in markdown format.' },
 				{ role: 'user', content: userMessage },
 			],
 		})
 
-		// Extracting text from the response
-		const responseText = completion.choices[0].message?.content || 'No response generated.'
-
-		// Saving the result to the database
-		await prisma.message.create({
-			data: {
-				text: responseText,
-				isUserMessage: false,
-				fileId,
-				userId,
+		const stream = OpenAIStream(response, {
+			async onCompletion(completion) {
+				await prisma.message.create({
+					data: {
+						text: completion,
+						isUserMessage: false,
+						fileId,
+						userId,
+					},
+				})
 			},
 		})
 
-		// Return the result to the client
-		return new Response(responseText, {
-			headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-		})
+		return new StreamingTextResponse(stream)
 	} catch (error) {
 		console.error('Error processing the request:', error)
 
