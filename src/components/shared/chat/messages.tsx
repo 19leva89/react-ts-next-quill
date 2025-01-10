@@ -66,15 +66,15 @@ export const Messages = ({ fileId }: MessagesProps) => {
 					if (i === combinedMessages.length - 1) {
 						return (
 							<Message
+								key={message.id}
 								ref={ref}
 								message={message}
 								isNextMessageSamePerson={isNextMessageSamePerson}
-								key={message.id}
 							/>
 						)
 					} else
 						return (
-							<Message message={message} isNextMessageSamePerson={isNextMessageSamePerson} key={message.id} />
+							<Message key={message.id} message={message} isNextMessageSamePerson={isNextMessageSamePerson} />
 						)
 				})
 			) : isLoading ? (

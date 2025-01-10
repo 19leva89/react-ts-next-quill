@@ -55,10 +55,10 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 
 				const progressInterval = startSimulatedProgress()
 
-				console.log('Accepted file:', acceptedFile)
+				// console.log('Accepted file:', acceptedFile)
 				// handle file uploading
 				startUpload(acceptedFile).then((res) => {
-					console.log('Upload result:', res)
+					// console.log('Upload result:', res)
 					if (!res || res.length === 0) {
 						console.error('Upload failed: no response')
 
@@ -72,7 +72,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 					const fileResponse = res?.[0]
 
 					const key = fileResponse?.key
-					console.log('File uploaded with key:', key)
+					// console.log('File uploaded with key:', key)
 					if (!key) {
 						return toast({
 							title: 'Something went wrong',

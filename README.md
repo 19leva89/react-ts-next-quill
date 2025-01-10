@@ -1,5 +1,4 @@
 AI (Artificial Intelligence) tools:
-- AI (message generation)
 - LangChain (AI framework)
 - OpenAI (creating AI models)
 - Pinecone (vector database)

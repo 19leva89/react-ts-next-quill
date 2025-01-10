@@ -155,12 +155,8 @@ export const appRouter = router({
 
 			const messages = await prisma.message.findMany({
 				take: limit + 1,
-				where: {
-					fileId,
-				},
-				orderBy: {
-					createdAt: 'desc',
-				},
+				where: { fileId },
+				orderBy: { createdAt: 'desc' },
 				cursor: cursor ? { id: cursor } : undefined,
 				select: {
 					id: true,
@@ -173,6 +169,7 @@ export const appRouter = router({
 			let nextCursor: typeof cursor | undefined = undefined
 			if (messages.length > limit) {
 				const nextItem = messages.pop()
+
 				nextCursor = nextItem?.id
 			}
 
@@ -201,7 +198,7 @@ export const appRouter = router({
 		const { userId } = ctx
 
 		// Логирование для отладки
-		console.log('Searching for file with key:', input.key, 'and userId:', userId)
+		// console.log('Searching for file with key:', input.key, 'and userId:', userId)
 
 		const file = await prisma.file.findFirst({
 			where: {
@@ -210,7 +207,7 @@ export const appRouter = router({
 			},
 		})
 
-		console.log('DB query result:', file)
+		// console.log('DB query result:', file)
 
 		if (!file) {
 			throw new TRPCError({

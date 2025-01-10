@@ -22,10 +22,10 @@ const middleware = async () => {
 		throw new TRPCError({ code: 'UNAUTHORIZED' })
 	}
 
-	console.log('User authenticated:', user.id)
+	// console.log('User authenticated:', user.id)
 
 	const subscriptionPlan = await getUserSubscriptionPlan()
-	console.log('User subscription plan:', subscriptionPlan)
+	// console.log('User subscription plan:', subscriptionPlan)
 
 	return {
 		subscriptionPlan,
@@ -58,29 +58,29 @@ const onUploadComplete = async ({
 	let createdFile: { id: string } | null = null
 
 	try {
-		// Проверка на существование файла в базе данных
+		// Checking if a file exists in a database
 		const isFileExist = await prisma.file.findUnique({
 			where: {
 				key: file.key,
 			},
 		})
 
-		// Если файл уже существует, выходим
+		// If the file already exists, exit
 		if (isFileExist) {
-			console.log('A file with this key already exists:', file.key)
+			// console.log('A file with this key already exists:', file.key)
 			return
 		}
 
-		console.log('Generated file URL:', file.url)
-		console.log('User ID:', metadata.userId)
+		// console.log('Generated file URL:', file.url)
+		// console.log('User ID:', metadata.userId)
 
-		// Проверка наличия всех необходимых данных
+		// Checking that all required data is present
 		if (!file.key || !file.name || !metadata.userId || !file.url) {
-			console.error('Missing data for file creation:', { file, metadata })
+			// console.error('Missing data for file creation:', { file, metadata })
 			return
 		}
 
-		// Создание записи в базе данных
+		// Creating a record in the database
 		createdFile = await prisma.file.create({
 			data: {
 				key: file.key,
@@ -91,16 +91,16 @@ const onUploadComplete = async ({
 			},
 		})
 
-		console.log('File created successfully:', createdFile)
+		// console.log('File created successfully:', createdFile)
 
-		// Загрузка PDF файла
+		// Download PDF file
 		const response = await fetch(file.url)
 		const blob = await response.blob()
 
-		// Инициализация PDF загрузчика и обработка документа
+		// Initializing the PDF loader and processing the document
 		const loader = new PDFLoader(blob)
 		const pageLevelDocs = await loader.load()
-		console.log('Document pages:', pageLevelDocs.length)
+		// console.log('Document pages:', pageLevelDocs.length)
 
 		const proPlan = PLANS.find((plan) => plan.name === 'Pro')
 		const freePlan = PLANS.find((plan) => plan.name === 'Free')
@@ -121,32 +121,36 @@ const onUploadComplete = async ({
 			return
 		}
 
-		// Инициализация Pinecone клиента и индекса
-		console.log('Инициализация клиента Pinecone...')
+		// Initializing Pinecone client and Index
+		// console.log('Initializing the Pinecone client...')
 		const pinecone = await getPineconeClient()
-		console.log('Клиент Pinecone успешно инициализирован.')
+		// console.log('Pinecone client initialized successfully.')
 
 		const pineconeIndex = pinecone.index('quill')
-		console.log('Индекс Pinecone получен:', pineconeIndex)
 
-		// Инициализация OpenAI Embeddings
-		console.log('Инициализация OpenAIEmbeddings...')
+		if (!pineconeIndex) {
+			throw new Error('Failed to create Pinecone index')
+		}
+		// console.log('Pinecone Index Received:', pineconeIndex)
+
+		// Initializing OpenAI Embeddings
+		// console.log('Initializing OpenAIEmbeddings...')
 		const embeddings = new OpenAIEmbeddings({
-			apiKey: process.env.OPENAI_API_KEY,
-			batchSize: 512, // Default value if omitted is 512. Max is 2048
-			model: 'text-embedding-ada-002',
+			openAIApiKey: process.env.OPENAI_API_KEY,
+			// batchSize: 512, // Default value if omitted is 512. Max is 2048
+			// model: 'text-embedding-ada-002',
 		})
-		console.log('OpenAIEmbeddings успешно инициализированы.', embeddings)
+		// console.log('OpenAIEmbeddings initialized successfully.', embeddings)
 
-		// Обработка документов с помощью PineconeStore
-		console.log('Обработка документов с помощью PineconeStore...')
+		// Processing documents with PineconeStore
+		// console.log('Processing documents with PineconeStore...')
 		await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
 			pineconeIndex,
 			namespace: createdFile.id,
 		})
-		console.log('Документы успешно обработаны.')
+		// console.log('Documents successfully added to Pinecone. Namespace:', createdFile.id)
 
-		// Обновление статуса файла на успешную загрузку
+		// Update file status to show successful upload
 		if (createdFile) {
 			await updateFileStatus(createdFile.id, 'SUCCESS')
 		}

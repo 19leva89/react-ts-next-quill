@@ -3,16 +3,14 @@ import { NextRequest } from 'next/server'
 import { PineconeStore } from '@langchain/pinecone'
 import { OpenAIEmbeddings } from '@langchain/openai'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-// import { streamText } from 'ai'
-// import { openai } from '@ai-sdk/openai'
 
 import { prisma } from '@/db'
-import { aiClient } from '@/lib/openai'
+import { openai } from '@/lib/openai'
 import { getPineconeClient } from '@/lib/pinecone'
 import { SendMessageValidator } from '@/lib/send-message-validator'
 
 export const POST = async (req: NextRequest) => {
-	// endpoint for asking a question to a pdf file
+	// Endpoint for asking a question to a PDF file
 	const body = await req.json()
 
 	const { getUser } = getKindeServerSession()
@@ -51,9 +49,9 @@ export const POST = async (req: NextRequest) => {
 
 	// 1: vectorize message
 	const embeddings = new OpenAIEmbeddings({
-		apiKey: process.env.OPENAI_API_KEY,
-		batchSize: 512, // Default value if omitted is 512. Max is 2048
-		model: 'text-embedding-ada-002',
+		openAIApiKey: process.env.OPENAI_API_KEY,
+		// batchSize: 512, // Default value if omitted is 512. Max is 2048
+		// model: 'text-embedding-ada-002',
 	})
 
 	const pinecone = await getPineconeClient()
@@ -77,69 +75,64 @@ export const POST = async (req: NextRequest) => {
 		content: msg.text,
 	}))
 
+	const previousConversation = formattedPrevMessages
+		.map((message) =>
+			message.role === 'user' ? `User: ${message.content}` : `Assistant: ${message.content}`,
+		)
+		.join('\n')
+
+	const context = results.map((r) => r.pageContent).join('\n\n')
+
+	const userMessage = `
+			Use the following pieces of context (or previous conversation if needed) to answer the user's question in markdown format. 
+			If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+			----------------
+			PREVIOUS CONVERSATION:
+			${previousConversation}
+
+			----------------
+			CONTEXT:
+			${context}
+
+			USER INPUT: ${message}
+		`
+
 	try {
-		const response = await aiClient.chat.completions.create({
+		const completion = await openai.chat.completions.create({
 			model: 'gpt-3.5-turbo',
-			stream: true,
+			// model: 'gpt-4o-mini',
+			temperature: 0.2,
 			messages: [
-				{
-					role: 'system',
-					content:
-						'Use the following pieces of context (or previous conversation if needed) to answer the users question in markdown format.',
-				},
-				{
-					role: 'user',
-					content: `Use the following pieces of context (or previous conversation if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
-        
-					\n----------------\n
-					PREVIOUS CONVERSATION:
-					${formattedPrevMessages.map((message) => {
-						if (message.role === 'user') return `User: ${message.content}\n`
-						return `Assistant: ${message.content}\n`
-					})}
-
-					\n----------------\n
-					CONTEXT:
-					${results.map((r: { pageContent: string }) => r.pageContent).join('\n\n')}
-
-					USER INPUT: ${message}`,
-				},
+				{ role: 'system', content: 'Answer in markdown format.' },
+				{ role: 'user', content: userMessage },
 			],
 		})
 
-		// Потоковая передача ответа с использованием streamText
-		const stream = new ReadableStream({
-			async start(controller) {
-				for await (const chunk of response) {
-					const text = chunk.choices[0].delta?.content || ''
-					controller.enqueue(new TextEncoder().encode(text))
+		// Extracting text from the response
+		const responseText = completion.choices[0].message?.content || 'No response generated.'
 
-					// Сохраняем частичный ответ в базе данных
-					await prisma.message.create({
-						data: {
-							text,
-							isUserMessage: false,
-							userId,
-							fileId,
-						},
-					})
-				}
-				controller.close()
+		// Saving the result to the database
+		await prisma.message.create({
+			data: {
+				text: responseText,
+				isUserMessage: false,
+				fileId,
+				userId,
 			},
 		})
 
-		// Используем streamText для отправки потока в клиент
-		return new Response(stream, {
+		// Return the result to the client
+		return new Response(responseText, {
 			headers: { 'Content-Type': 'text/plain; charset=utf-8' },
 		})
 	} catch (error) {
-		if ((error as any).response?.status === 429) {
-			// Handle the 429 error
-			console.error('API Rate Limit Exceeded:', error)
+		console.error('Error processing the request:', error)
+
+		if ((error as any)?.response?.status === 429) {
 			return new Response('API Rate Limit Exceeded', { status: 429 })
-		} else {
-			console.error('API Request Error:', error)
-			return new Response('Internal Server Error', { status: 500 })
 		}
+
+		return new Response('Internal Server Error', { status: 500 })
 	}
 }

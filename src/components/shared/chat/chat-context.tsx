@@ -71,16 +71,16 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 					}
 				}
 
-				const newPages = [...old.pages]
+				let newPages = [...old.pages]
 
-				const latestPage = newPages[0]!
+				let latestPage = newPages[0]!
 
 				latestPage.messages = [
 					{
-						createdAt: new Date().toISOString(),
 						id: crypto.randomUUID(),
 						text: message,
 						isUserMessage: true,
+						createdAt: new Date().toISOString(),
 					},
 					...latestPage.messages,
 				]
@@ -129,21 +129,21 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 				utils.getFileMessages.setInfiniteData({ fileId, limit: INFINITE_QUERY_LIMIT }, (old) => {
 					if (!old) return { pages: [], pageParams: [] }
 
-					const isAiResponseCreated = old.pages.some((page) =>
+					let isAiResponseCreated = old.pages.some((page) =>
 						page.messages.some((message) => message.id === 'ai-response'),
 					)
 
-					const updatedPages = old.pages.map((page) => {
+					let updatedPages = old.pages.map((page) => {
 						if (page === old.pages[0]) {
 							let updatedMessages
 
 							if (!isAiResponseCreated) {
 								updatedMessages = [
 									{
-										createdAt: new Date().toISOString(),
 										id: 'ai-response',
 										text: accResponse,
 										isUserMessage: false,
+										createdAt: new Date().toISOString(),
 									},
 									...page.messages,
 								]

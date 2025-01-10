@@ -59,6 +59,7 @@ export const Message = forwardRef<HTMLDivElement, MessageProps>(
 						) : (
 							message.text
 						)}
+
 						{message.id !== 'loading-message' ? (
 							<div
 								className={cn('text-xs select-none mt-2 w-full text-right', {
