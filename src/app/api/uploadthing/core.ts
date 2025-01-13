@@ -102,14 +102,14 @@ const onUploadComplete = async ({
 		const pageLevelDocs = await loader.load()
 		// console.log('Document pages:', pageLevelDocs.length)
 
+		const pagesAmount = pageLevelDocs.length
+		const { isSubscribed } = metadata.subscriptionPlan
+
 		const proPlan = PLANS.find((plan) => plan.name === 'Pro')
 		const freePlan = PLANS.find((plan) => plan.name === 'Free')
 		if (!proPlan || !freePlan) {
-			throw new Error('Subscription plans are not configured.')
+			throw new Error('Subscription plans are not configured')
 		}
-
-		const pagesAmount = pageLevelDocs.length
-		const { isSubscribed } = metadata.subscriptionPlan
 
 		if (
 			(isSubscribed && pagesAmount > proPlan.pagesPerPdf) ||

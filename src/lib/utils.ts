@@ -42,7 +42,7 @@ export function constructMetadata({
 			description,
 			images: [
 				{
-					url: image,
+					url: absoluteUrl(image),
 				},
 			],
 		},
@@ -50,12 +50,11 @@ export function constructMetadata({
 			card: 'summary_large_image',
 			title,
 			description,
-			images: [image],
-			creator: '@joshtriedcoding',
+			images: [absoluteUrl(image)],
+			creator: '@sobolev',
 		},
 		icons,
-		metadataBase: new URL('https://quill-jet.vercel.app'),
-		themeColor: '#FFF',
+		metadataBase: new URL(absoluteUrl('')),
 		...(noIndex && {
 			robots: {
 				index: false,
