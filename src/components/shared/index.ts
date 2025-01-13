@@ -1,5 +1,7 @@
 export * from './chat'
 // export { AuthProvider } from './auth-provider'
+export { BillingForm } from './billing-form'
 export { Icons } from './icons'
 export { MaxWidthWrapper } from './max-width-wrapper'
+export { UpgradeButton } from './upgrade-button'
 // export { UploadButton } from './upload-button'

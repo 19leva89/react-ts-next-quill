@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
-import { NextRequest } from 'next/server'
 import { PineconeStore } from '@langchain/pinecone'
 import { OpenAIEmbeddings } from '@langchain/openai'
+import { NextRequest, NextResponse } from 'next/server'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
 
 	const { id: userId } = user
 
-	if (!userId) return new Response('UNAUTHORIZED', { status: 401 })
+	if (!userId) return new NextResponse('UNAUTHORIZED', { status: 401 })
 
 	const { fileId, message } = SendMessageValidator.parse(body)
 
@@ -30,7 +30,7 @@ export const POST = async (req: NextRequest) => {
 		},
 	})
 
-	if (!file) return new Response('Not found', { status: 404 })
+	if (!file) return new NextResponse('Not found', { status: 404 })
 
 	await prisma.message.create({
 		data: {
@@ -128,9 +128,9 @@ export const POST = async (req: NextRequest) => {
 		console.error('Error processing the request:', error)
 
 		if ((error as any)?.response?.status === 429) {
-			return new Response('API Rate Limit Exceeded', { status: 429 })
+			return new NextResponse('API Rate Limit Exceeded', { status: 429 })
 		}
 
-		return new Response('Internal Server Error', { status: 500 })
+		return new NextResponse('Internal Server Error', { status: 500 })
 	}
 }

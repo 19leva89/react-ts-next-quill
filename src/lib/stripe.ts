@@ -15,13 +15,14 @@ export async function getUserSubscriptionPlan(): Promise<{
 	stripeCurrentPeriodEnd: Date | null
 	stripeSubscriptionId?: string | null | undefined
 	stripeCustomerId?: string | null | undefined
+	name: string
 }> {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
 
 	if (!user.id) {
 		return {
-			...PLANS[0],
+			name: PLANS[0].name,
 			isSubscribed: false,
 			isCanceled: false,
 			stripeCurrentPeriodEnd: null,
@@ -36,7 +37,7 @@ export async function getUserSubscriptionPlan(): Promise<{
 
 	if (!dbUser) {
 		return {
-			...PLANS[0],
+			name: PLANS[0].name,
 			isSubscribed: false,
 			isCanceled: false,
 			stripeCurrentPeriodEnd: null,
@@ -58,7 +59,7 @@ export async function getUserSubscriptionPlan(): Promise<{
 	}
 
 	return {
-		...plan,
+		name: plan?.name ?? 'Free',
 		stripeSubscriptionId: dbUser.stripeSubscriptionId,
 		stripeCurrentPeriodEnd: dbUser.stripeCurrentPeriodEnd,
 		stripeCustomerId: dbUser.stripeCustomerId,
