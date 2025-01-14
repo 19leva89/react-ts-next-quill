@@ -29,6 +29,17 @@ const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
 
 	const plan = await getUserSubscriptionPlan()
 
+	// Define a new file status depending on the plan
+	const newStatus = plan.name === 'Pro' ? 'SUCCESS' : 'FAILED'
+
+	// Update the file status if it does not match the required one
+	if (file.uploadStatus !== newStatus) {
+		await prisma.file.update({
+			where: { id: fileId },
+			data: { uploadStatus: newStatus },
+		})
+	}
+
 	return (
 		<div className="flex-1 justify-between flex flex-col h-[calc(100vh-3.5rem)]">
 			<div className="mx-auto w-full max-w-8xl grow lg:flex xl:px-2">
