@@ -9,6 +9,18 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 	typescript: true,
 })
 
+export async function setFileStatusSuccess(userId: string): Promise<void> {
+	if (!userId) {
+		throw new Error('User ID is required')
+	}
+
+	// Update the status of all user files to 'SUCCESS'
+	await prisma.file.updateMany({
+		where: { userId },
+		data: { uploadStatus: 'SUCCESS' },
+	})
+}
+
 export async function getUserSubscriptionPlan(): Promise<{
 	isSubscribed: boolean
 	isCanceled: boolean
@@ -63,6 +75,11 @@ export async function getUserSubscriptionPlan(): Promise<{
 
 			isCanceled = false
 		}
+	}
+
+	// If the user activates a Pro subscription for the first time
+	if (plan?.name === 'Pro' && !isCanceled) {
+		await setFileStatusSuccess(dbUser.id)
 	}
 
 	return {
