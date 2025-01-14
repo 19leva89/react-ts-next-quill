@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Cloud, File, Loader2 } from 'lucide-react'
 
+import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
 import { useToast } from '@/hooks/use-toast'
 import { useUploadThing } from '@/lib/uploadthing'
@@ -104,7 +105,13 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 									<span className="font-semibold">Click to upload</span> or drag and drop
 								</p>
 
-								<p className="text-xs text-zinc-500">PDF (up to {isSubscribed ? '16' : '4'} MB)</p>
+								<p className="text-xs text-zinc-500">
+									PDF (up to {isSubscribed ? '16' : '4'} MB and{' '}
+									{isSubscribed
+										? PLANS.find((plan) => plan.name === 'Pro')?.pagesPerPdf
+										: PLANS.find((plan) => plan.name === 'Free')?.pagesPerPdf}{' '}
+									Pages)
+								</p>
 							</div>
 
 							{acceptedFiles && acceptedFiles[0] ? (

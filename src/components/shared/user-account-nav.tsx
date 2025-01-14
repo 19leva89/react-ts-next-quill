@@ -34,7 +34,16 @@ export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavPr
 					<Avatar className="relative w-8 h-8">
 						{imageUrl ? (
 							<div className="relative aspect-square h-full w-full">
-								<Image fill src={imageUrl} alt="profile picture" referrerPolicy="no-referrer" />
+								<Image
+									fill
+									src={imageUrl}
+									alt="profile picture"
+									referrerPolicy="no-referrer"
+									className="object-cover"
+								/>
+								<div className="absolute inset-0 flex items-center justify-center">
+									<span className="text-white text-xl font-bold">{name.charAt(0)}</span>
+								</div>
 							</div>
 						) : (
 							<AvatarFallback>
@@ -67,7 +76,8 @@ export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavPr
 						<Link href="/dashboard/billing">Manage Subscription</Link>
 					) : (
 						<Link href="/pricing">
-							Upgrade <Gem className="text-blue-600 h-4 w-4 ml-1.5" />
+							Upgrade to PRO
+							<Gem className="text-blue-600 h-4 w-4 ml-1.5" />
 						</Link>
 					)}
 				</DropdownMenuItem>

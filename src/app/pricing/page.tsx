@@ -49,7 +49,7 @@ const PricingPage = async () => {
 		{
 			plan: 'Pro',
 			tagline: 'For larger projects with higher needs',
-			quota: PLANS.find((p) => p.slug === 'pro')!.quota,
+			quota: PLANS.find((plan) => plan.slug === 'pro')!.quota,
 			features: [
 				{
 					text: '25 pages per PDF',
