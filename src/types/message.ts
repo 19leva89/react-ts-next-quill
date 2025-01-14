@@ -1,5 +1,7 @@
-import { AppRouter } from '@/trpc'
+import { JSX } from 'react'
 import { inferRouterOutputs } from '@trpc/server'
+
+import { AppRouter } from '@/trpc'
 
 type RouterOutput = inferRouterOutputs<AppRouter>
 
