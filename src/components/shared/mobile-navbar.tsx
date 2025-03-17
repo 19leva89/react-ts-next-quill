@@ -8,7 +8,11 @@ import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components'
 
 import { Separator } from '@/components/ui'
 
-export const MobileNavbar = ({ isAuth }: { isAuth: boolean }) => {
+interface Props {
+	isAuth: boolean
+}
+
+export const MobileNavbar = ({ isAuth }: Props) => {
 	const [isOpen, setOpen] = useState<boolean>(false)
 
 	const toggleOpen = () => setOpen((prev) => !prev)

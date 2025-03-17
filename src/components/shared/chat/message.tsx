@@ -48,13 +48,13 @@ export const Message = forwardRef<HTMLDivElement, Props>(({ message, isNextMessa
 					})}
 				>
 					{typeof message.text === 'string' ? (
-						<ReactMarkdown
+						<div
 							className={cn('prose', {
 								'text-zinc-50': message.isUserMessage,
 							})}
 						>
-							{message.text}
-						</ReactMarkdown>
+							<ReactMarkdown>{message.text}</ReactMarkdown>
+						</div>
 					) : (
 						message.text
 					)}

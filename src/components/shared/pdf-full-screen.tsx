@@ -1,8 +1,8 @@
 'use client'
 
 import { toast } from 'sonner'
-import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
+import { useEffect, useState } from 'react'
 import { ExpandIcon, Loader2Icon } from 'lucide-react'
 import { useResizeDetector } from 'react-resize-detector'
 
@@ -16,20 +16,26 @@ interface Props {
 }
 
 export const PdfFullScreen = ({ fileUrl }: Props) => {
-	const [isOpen, setIsOpen] = useState(false)
 	const [numPages, setNumPages] = useState<number>()
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [isMounted, setIsMounted] = useState<boolean>(false)
 
 	const { width, ref } = useResizeDetector()
 
+	const handleOpenChange = (visible: boolean) => {
+		if (!visible && isMounted) {
+			setNumPages(undefined)
+			setIsOpen(false)
+		}
+	}
+
+	useEffect(() => {
+		setIsMounted(true)
+		return () => setIsMounted(false)
+	}, [])
+
 	return (
-		<Dialog
-			open={isOpen}
-			onOpenChange={(visible) => {
-				if (!visible) {
-					setIsOpen(visible)
-				}
-			}}
-		>
+		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger onClick={() => setIsOpen(true)} asChild>
 				<Button variant="ghost" size="icon" className="gap-1.5" aria-label="fullscreen">
 					<ExpandIcon className="h-4 w-4" />
@@ -56,8 +62,14 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
 							className="max-h-full"
 						>
-							{new Array(numPages).fill(0).map((_, i) => (
-								<Page key={i} width={width ? width : 1} pageNumber={i + 1} />
+							{Array.from(new Array(numPages), (_, i) => (
+								<Page
+									key={`page_${i + 1}`}
+									width={width || 1}
+									pageNumber={i + 1}
+									renderTextLayer={false}
+									renderMode="canvas"
+								/>
 							))}
 						</Document>
 					</div>

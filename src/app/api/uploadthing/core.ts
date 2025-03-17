@@ -52,7 +52,7 @@ const onUploadComplete = async ({
 	file: {
 		key: string
 		name: string
-		url: string
+		ufsUrl: string
 	}
 }) => {
 	let createdFile: { id: string } | null = null
@@ -71,11 +71,11 @@ const onUploadComplete = async ({
 			return
 		}
 
-		// console.log('Generated file URL:', file.url)
+		// console.log('Generated file URL:', file.ufsUrl)
 		// console.log('User ID:', metadata.userId)
 
 		// Checking that all required data is present
-		if (!file.key || !file.name || !metadata.userId || !file.url) {
+		if (!file.key || !file.name || !metadata.userId || !file.ufsUrl) {
 			// console.error('Missing data for file creation:', { file, metadata })
 			return
 		}
@@ -86,7 +86,7 @@ const onUploadComplete = async ({
 				key: file.key,
 				name: file.name,
 				userId: metadata.userId,
-				url: file.url,
+				url: file.ufsUrl,
 				uploadStatus: 'PROCESSING',
 			},
 		})
@@ -94,7 +94,7 @@ const onUploadComplete = async ({
 		// console.log('File created successfully:', createdFile)
 
 		// Download PDF file
-		const response = await fetch(file.url)
+		const response = await fetch(file.ufsUrl)
 		const blob = await response.blob()
 
 		// Initializing the PDF loader and processing the document

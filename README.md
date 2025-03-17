@@ -63,4 +63,4 @@ terminal powershell -> npx prisma migrate reset
 terminal powershell -> npx prisma db seed (loading test database)
 
 terminal CommandPrompt -> stripe login
-terminal CommandPrompt -> stripe listen --forward-to localhost:3000/api/webhook
+terminal CommandPrompt -> stripe listen --forward-to localhost:3000/api/webhooks/stripe

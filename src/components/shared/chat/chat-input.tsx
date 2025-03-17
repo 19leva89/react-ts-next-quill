@@ -42,6 +42,7 @@ export const ChatInput = ({ isDisabled }: Props) => {
 							/>
 
 							<Button
+								size="icon"
 								disabled={isLoading || isDisabled}
 								onClick={() => {
 									addMessage()
