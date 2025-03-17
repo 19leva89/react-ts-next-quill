@@ -4,9 +4,8 @@ import { useIntersection } from '@mantine/hooks'
 import { useContext, useEffect, useRef } from 'react'
 import { Loader2Icon, MessageSquareIcon } from 'lucide-react'
 
-import Skeleton from 'react-loading-skeleton'
-
 import { trpc } from '@/app/_trpc/client'
+import { Skeleton } from '@/components/ui'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 import { ChatContext, Message } from '@/components/shared/chat'
 
@@ -18,10 +17,7 @@ export const Messages = ({ fileId }: Props) => {
 	const { isLoading: isAiThinking } = useContext(ChatContext)
 
 	const { data, isLoading, fetchNextPage } = trpc.getFileMessages.useInfiniteQuery(
-		{
-			fileId,
-			limit: INFINITE_QUERY_LIMIT,
-		},
+		{ fileId, limit: INFINITE_QUERY_LIMIT },
 		{
 			getNextPageParam: (lastPage: { nextCursor?: string | null }) => lastPage?.nextCursor,
 			keepPreviousData: true,
@@ -45,10 +41,7 @@ export const Messages = ({ fileId }: Props) => {
 
 	const lastMessageRef = useRef<HTMLDivElement>(null)
 
-	const { ref, entry } = useIntersection({
-		root: lastMessageRef.current,
-		threshold: 1,
-	})
+	const { ref, entry } = useIntersection({ root: lastMessageRef.current, threshold: 1 })
 
 	useEffect(() => {
 		if (entry?.isIntersecting) {

@@ -1,15 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import Skeleton from 'react-loading-skeleton'
 
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { GhostIcon, Loader2Icon, MessageSquareIcon, PlusIcon, TrashIcon } from 'lucide-react'
 
 import { trpc } from '@/app/_trpc/client'
-import { Button, Separator } from '@/components/ui'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { Button, Separator, Skeleton } from '@/components/ui'
 import { UploadButton } from '@/components/shared/upload-button'
 
 interface Props {
@@ -103,7 +102,11 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 						))}
 				</ul>
 			) : isLoading ? (
-				<Skeleton height={100} className="my-2" count={3} />
+				<ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+					<Skeleton className="h-33" />
+					<Skeleton className="h-33" />
+					<Skeleton className="h-33" />
+				</ul>
 			) : (
 				<div className="mt-16 flex flex-col items-center gap-2">
 					<GhostIcon className="h-8 w-8 text-zinc-800" />

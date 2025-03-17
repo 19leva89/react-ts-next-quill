@@ -55,6 +55,7 @@ Utilities and Libraries:
 To run the client and server via concurrently:
 terminal powershell -> npm run all
 terminal powershell -> npm run lint (loading ESLint checker)
+terminal powershell -> npm run knip
 
 terminal powershell -> npx prisma generate
 terminal powershell -> npx prisma db push

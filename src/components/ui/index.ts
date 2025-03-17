@@ -12,6 +12,7 @@ export {
 export { Input } from './input'
 export { Progress } from './progress'
 export { Separator } from './separator'
+export { Skeleton } from './skeleton'
 export { Textarea } from './textarea'
 export { Toaster } from './sonner'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'

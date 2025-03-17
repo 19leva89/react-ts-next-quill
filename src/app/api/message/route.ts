@@ -1,8 +1,8 @@
+import { streamText } from 'ai'
 import { TRPCError } from '@trpc/server'
 import { PineconeStore } from '@langchain/pinecone'
 import { OpenAIEmbeddings } from '@langchain/openai'
 import { NextRequest, NextResponse } from 'next/server'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { openai } from '@/lib/openai'
@@ -23,23 +23,11 @@ export const POST = async (req: NextRequest) => {
 
 	const { fileId, message } = SendMessageValidator.parse(body)
 
-	const file = await prisma.file.findFirst({
-		where: {
-			id: fileId,
-			userId,
-		},
-	})
+	const file = await prisma.file.findFirst({ where: { id: fileId, userId } })
 
 	if (!file) return new NextResponse('Not found', { status: 404 })
 
-	await prisma.message.create({
-		data: {
-			text: message,
-			isUserMessage: true,
-			userId,
-			fileId,
-		},
-	})
+	await prisma.message.create({ data: { text: message, isUserMessage: true, userId, fileId } })
 
 	if (!process.env.OPENAI_API_KEY) {
 		throw new TRPCError({
@@ -58,10 +46,7 @@ export const POST = async (req: NextRequest) => {
 	const pinecone = await getPineconeClient()
 	const pineconeIndex = pinecone.index('quill')
 
-	const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
-		pineconeIndex,
-		namespace: file.id,
-	})
+	const vectorStore = await PineconeStore.fromExistingIndex(embeddings, { pineconeIndex, namespace: file.id })
 
 	const results = await vectorStore.similaritySearch(message, 4)
 
@@ -100,30 +85,32 @@ export const POST = async (req: NextRequest) => {
 		`
 
 	try {
-		const response = await openai.chat.completions.create({
-			model: 'gpt-3.5-turbo',
+		const result = streamText({
+			model: openai('gpt-3.5-turbo'),
+			system: 'Answer in markdown format.',
 			temperature: 0.2,
-			stream: true,
-			messages: [
-				{ role: 'system', content: 'Answer in markdown format.' },
-				{ role: 'user', content: userMessage },
-			],
+			messages: [{ role: 'user', content: userMessage }],
 		})
 
-		const stream = OpenAIStream(response as unknown as Response, {
-			async onCompletion(completion) {
-				await prisma.message.create({
-					data: {
-						text: completion,
-						isUserMessage: false,
-						fileId,
-						userId,
-					},
-				})
-			},
-		})
+		let completion = ''
 
-		return new StreamingTextResponse(stream)
+		// Receive a text stream
+		const stream = result.textStream
+
+		// Collect the full response and save it in the DB
+		const saveCompletion = async () => {
+			for await (const textPart of stream) {
+				completion += textPart
+			}
+
+			await prisma.message.create({ data: { text: completion, isUserMessage: false, fileId, userId } })
+		}
+
+		// Start saving in the background
+		saveCompletion().catch(console.error)
+
+		// Return the text stream directly
+		return result.toTextStreamResponse()
 	} catch (error) {
 		console.error('Error processing the request:', error)
 
