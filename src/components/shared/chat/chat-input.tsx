@@ -1,16 +1,16 @@
 'use client'
 
-import { Send } from 'lucide-react'
+import { SendIcon } from 'lucide-react'
 import { useContext, useRef } from 'react'
 
 import { Button, Textarea } from '@/components/ui'
 import { ChatContext } from '@/components/shared/chat'
 
-interface ChatInputProps {
+interface Props {
 	isDisabled?: boolean
 }
 
-export const ChatInput = ({ isDisabled }: ChatInputProps) => {
+export const ChatInput = ({ isDisabled }: Props) => {
 	const { addMessage, handleInputChange, isLoading, message } = useContext(ChatContext)
 
 	const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -50,7 +50,7 @@ export const ChatInput = ({ isDisabled }: ChatInputProps) => {
 								aria-label="send message"
 								className="absolute right-[5px] bottom-[3px] disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 							>
-								<Send className="h-4 w-4" />
+								<SendIcon className="h-4 w-4" />
 							</Button>
 						</div>
 					</div>

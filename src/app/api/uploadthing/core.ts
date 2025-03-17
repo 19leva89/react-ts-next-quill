@@ -5,7 +5,7 @@ import { createUploadthing, type FileRouter } from 'uploadthing/next'
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
-import { prisma } from '@/db'
+import { prisma } from '@/lib/prisma'
 import { PLANS } from '@/config/stripe'
 import { getPineconeClient } from '@/lib/pinecone'
 import { getUserSubscriptionPlan } from '@/lib/stripe'

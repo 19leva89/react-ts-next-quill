@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Gem } from 'lucide-react'
+import { GemIcon } from 'lucide-react'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import {
@@ -18,13 +18,13 @@ import {
 import { Icons } from '@/components/shared'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 
-interface UserAccountNavProps {
+interface Props {
 	email: string | undefined
 	name: string
 	imageUrl: string
 }
 
-export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavProps) => {
+export const UserAccountNav = async ({ email, imageUrl, name }: Props) => {
 	const subscriptionPlan = await getUserSubscriptionPlan()
 
 	return (
@@ -77,7 +77,7 @@ export const UserAccountNav = async ({ email, imageUrl, name }: UserAccountNavPr
 					) : (
 						<Link href="/pricing">
 							Upgrade to PRO
-							<Gem className="text-blue-600 h-4 w-4 ml-1.5" />
+							<GemIcon className="text-blue-600 h-4 w-4 ml-1.5" />
 						</Link>
 					)}
 				</DropdownMenuItem>

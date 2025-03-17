@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { ArrowRight, Check, HelpCircle, Minus } from 'lucide-react'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { ArrowRightIcon, CheckIcon, HelpCircleIcon, MinusIcon } from 'lucide-react'
 
 import { cn } from '@/lib'
 import { PLANS } from '@/config/stripe'
@@ -117,7 +117,7 @@ const PricingPage = async () => {
 
 										<Tooltip delayDuration={300}>
 											<TooltipTrigger className="cursor-default ml-1.5">
-												<HelpCircle className="h-4 w-4 text-zinc-500" />
+												<HelpCircleIcon className="h-4 w-4 text-zinc-500" />
 											</TooltipTrigger>
 
 											<TooltipContent className="w-80 p-2">
@@ -134,9 +134,9 @@ const PricingPage = async () => {
 										<li key={text} className="flex space-x-5">
 											<div className="flex-shrink-0">
 												{negative ? (
-													<Minus className="h-6 w-6 text-gray-300" />
+													<MinusIcon className="h-6 w-6 text-gray-300" />
 												) : (
-													<Check className="h-6 w-6 text-blue-500" />
+													<CheckIcon className="h-6 w-6 text-blue-500" />
 												)}
 											</div>
 											{footnote ? (
@@ -151,7 +151,7 @@ const PricingPage = async () => {
 
 													<Tooltip delayDuration={300}>
 														<TooltipTrigger className="cursor-default ml-1.5">
-															<HelpCircle className="h-4 w-4 text-zinc-500" />
+															<HelpCircleIcon className="h-4 w-4 text-zinc-500" />
 														</TooltipTrigger>
 
 														<TooltipContent className="w-80 p-2">{footnote}</TooltipContent>
@@ -183,7 +183,7 @@ const PricingPage = async () => {
 										>
 											{user ? 'Upgrade now' : 'Sign up'}
 
-											<ArrowRight className="h-5 w-5 ml-1.5" />
+											<ArrowRightIcon className="h-5 w-5 ml-1.5" />
 										</Link>
 									) : user ? (
 										<UpgradeButton />
@@ -196,7 +196,7 @@ const PricingPage = async () => {
 										>
 											{user ? 'Upgrade now' : 'Sign up'}
 
-											<ArrowRight className="h-5 w-5 ml-1.5" />
+											<ArrowRightIcon className="h-5 w-5 ml-1.5" />
 										</Link>
 									)}
 								</div>

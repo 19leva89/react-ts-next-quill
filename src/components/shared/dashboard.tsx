@@ -5,18 +5,18 @@ import Skeleton from 'react-loading-skeleton'
 
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { Ghost, Loader2, MessageSquare, Plus, Trash } from 'lucide-react'
+import { GhostIcon, Loader2Icon, MessageSquareIcon, PlusIcon, TrashIcon } from 'lucide-react'
 
 import { trpc } from '@/app/_trpc/client'
 import { Button, Separator } from '@/components/ui'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { UploadButton } from '@/components/shared/upload-button'
 
-interface DashboardProps {
+interface Props {
 	subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
 }
 
-export const Dashboard = ({ subscriptionPlan }: DashboardProps) => {
+export const Dashboard = ({ subscriptionPlan }: Props) => {
 	const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null)
 
 	const utils = trpc.useUtils()
@@ -73,13 +73,13 @@ export const Dashboard = ({ subscriptionPlan }: DashboardProps) => {
 
 								<div className="px-6 grid grid-cols-3 place-items-center py-2 gap-6 text-xs text-zinc-500">
 									<div className="flex items-center gap-2">
-										<Plus className="h-4 w-4" />
+										<PlusIcon className="h-4 w-4" />
 
 										{format(new Date(file.createdAt), 'MMM yyyy')}
 									</div>
 
 									<div className="flex items-center gap-2">
-										<MessageSquare className="h-4 w-4" />
+										<MessageSquareIcon className="h-4 w-4" />
 										mocked
 									</div>
 
@@ -90,9 +90,9 @@ export const Dashboard = ({ subscriptionPlan }: DashboardProps) => {
 										variant="destructive"
 									>
 										{currentlyDeletingFile === file.id ? (
-											<Loader2 className="h-4 w-4 animate-spin" />
+											<Loader2Icon className="h-4 w-4 animate-spin" />
 										) : (
-											<Trash className="h-4 w-4" />
+											<TrashIcon className="h-4 w-4" />
 										)}
 									</Button>
 								</div>
@@ -103,7 +103,7 @@ export const Dashboard = ({ subscriptionPlan }: DashboardProps) => {
 				<Skeleton height={100} className="my-2" count={3} />
 			) : (
 				<div className="mt-16 flex flex-col items-center gap-2">
-					<Ghost className="h-8 w-8 text-zinc-800" />
+					<GhostIcon className="h-8 w-8 text-zinc-800" />
 
 					<h3 className="font-semibold text-xl">Pretty empty around here</h3>
 

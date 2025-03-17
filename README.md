@@ -11,16 +11,16 @@ Content Management:
 - React PDF (reading PDF files)
 
 Core Technologies:
-- React 18
+- React 19
 - TypeScript
 - Next 15 (framework)
 
 Data Fetching and State Management:
-- Prisma 5 (ORM for DB)
+- Prisma 6 (ORM for DB)
 
 Form and Validation:
 - React Hook Form (working with forms)
-- React Textarea Autosize (working with textareas)
+- React Textarea Autosize (working with textarea)
 - Zod (first schema validation)
 
 Image Handling and Optimization:
@@ -28,7 +28,7 @@ Image Handling and Optimization:
 
 Middleware and Server Utilities:
 - Concurrently (all projects are running in tandem)
-- tRPC (end-to-end typesafe APIs)
+- tRPC (end-to-end type safe APIs)
 - UploadThing (uploading files)
 
 Payment:

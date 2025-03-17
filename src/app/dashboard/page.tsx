@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
-import { prisma } from '@/db'
+import { prisma } from '@/lib/prisma'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { Dashboard } from '@/components/shared/dashboard'
 

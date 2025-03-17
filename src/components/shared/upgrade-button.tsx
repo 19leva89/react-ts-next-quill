@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight } from 'lucide-react'
+import { ArrowRightIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui'
 import { trpc } from '@/app/_trpc/client'
@@ -14,7 +14,7 @@ export const UpgradeButton = () => {
 
 	return (
 		<Button onClick={() => createStripeSession()} className="w-full">
-			Upgrade now <ArrowRight className="h-5 w-5 ml-1.5" />
+			Upgrade now <ArrowRightIcon className="h-5 w-5 ml-1.5" />
 		</Button>
 	)
 }

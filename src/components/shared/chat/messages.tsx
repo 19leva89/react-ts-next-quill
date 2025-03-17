@@ -1,8 +1,8 @@
 'use client'
 
 import { useIntersection } from '@mantine/hooks'
-import { Loader2, MessageSquare } from 'lucide-react'
 import { useContext, useEffect, useRef } from 'react'
+import { Loader2Icon, MessageSquareIcon } from 'lucide-react'
 
 import Skeleton from 'react-loading-skeleton'
 
@@ -10,11 +10,11 @@ import { trpc } from '@/app/_trpc/client'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 import { ChatContext, Message } from '@/components/shared/chat'
 
-interface MessagesProps {
+interface Props {
 	fileId: string
 }
 
-export const Messages = ({ fileId }: MessagesProps) => {
+export const Messages = ({ fileId }: Props) => {
 	const { isLoading: isAiThinking } = useContext(ChatContext)
 
 	const { data, isLoading, fetchNextPage } = trpc.getFileMessages.useInfiniteQuery(
@@ -36,7 +36,7 @@ export const Messages = ({ fileId }: MessagesProps) => {
 		isUserMessage: false,
 		text: (
 			<span className="flex h-full items-center justify-center">
-				<Loader2 className="h-4 w-4 animate-spin" />
+				<Loader2Icon className="h-4 w-4 animate-spin" />
 			</span>
 		),
 	}
@@ -86,7 +86,7 @@ export const Messages = ({ fileId }: MessagesProps) => {
 				</div>
 			) : (
 				<div className="flex-1 flex flex-col items-center justify-center gap-2">
-					<MessageSquare className="h-8 w-8 text-blue-500" />
+					<MessageSquareIcon className="h-8 w-8 text-blue-500" />
 
 					<h3 className="font-semibold text-xl">You&apos;re all set!</h3>
 

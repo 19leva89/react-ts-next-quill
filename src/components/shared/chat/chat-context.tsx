@@ -13,7 +13,7 @@ type StreamResponse = {
 	addMessage: () => void
 	handleInputChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
 }
-interface ChatContextProviderProps {
+interface Props {
 	fileId: string
 	children: ReactNode
 }
@@ -25,7 +25,7 @@ export const ChatContext = createContext<StreamResponse>({
 	handleInputChange: () => {},
 })
 
-export const ChatContextProvider = ({ fileId, children }: ChatContextProviderProps) => {
+export const ChatContextProvider = ({ fileId, children }: Props) => {
 	const [message, setMessage] = useState<string>('')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 

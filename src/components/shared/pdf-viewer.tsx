@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useResizeDetector } from 'react-resize-detector'
-import { ChevronDown, ChevronUp, Loader2, RotateCw, Search } from 'lucide-react'
+import { ChevronDownIcon, ChevronUpIcon, Loader2Icon, RotateCwIcon, SearchIcon } from 'lucide-react'
 
 import SimpleBar from 'simplebar-react'
 
@@ -28,11 +28,11 @@ import 'react-pdf/dist/Page/AnnotationLayer.css'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
-interface PDFViewerProps {
+interface Props {
 	url: string
 }
 
-export const PDFViewer = ({ url }: PDFViewerProps) => {
+export const PDFViewer = ({ url }: Props) => {
 	const { toast } = useToast()
 
 	const [scale, setScale] = useState<number>(1)
@@ -88,12 +88,13 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 				<div className="flex items-center gap-2">
 					<Button
 						variant="ghost"
+						size="icon"
 						aria-label="previous page"
 						onClick={handlePrevPage}
 						disabled={currPage <= 1}
 						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
-						<ChevronDown className="h-4 w-4" />
+						<ChevronUpIcon className="h-4 w-4" />
 					</Button>
 
 					<div className="flex items-center gap-3">
@@ -117,12 +118,13 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 
 					<Button
 						variant="ghost"
+						size="icon"
 						aria-label="next page"
 						onClick={handleNextPage}
 						disabled={numPages === undefined || currPage === numPages}
 						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
 					>
-						<ChevronUp className="h-4 w-4" />
+						<ChevronDownIcon className="h-4 w-4" />
 					</Button>
 				</div>
 
@@ -130,9 +132,9 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button className="gap-1.5" aria-label="zoom" variant="ghost">
-								<Search className="h-4 w-4" />
+								<SearchIcon className="h-4 w-4" />
 								{scale * 100}%
-								<ChevronDown className="h-3 w-3 opacity-75" />
+								<ChevronDownIcon className="h-3 w-3 opacity-75" />
 							</Button>
 						</DropdownMenuTrigger>
 
@@ -147,10 +149,11 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 
 					<Button
 						variant="ghost"
+						size="icon"
 						aria-label="rotate 90 degrees"
 						onClick={() => setRotation((prev) => prev + 90)}
 					>
-						<RotateCw className="h-4 w-4" />
+						<RotateCwIcon className="h-4 w-4" />
 					</Button>
 
 					<PdfFullScreen fileUrl={url} />
@@ -166,7 +169,7 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 							file={url}
 							loading={
 								<div className="flex justify-center">
-									<Loader2 className="my-24 h-6 w-6 animate-spin" />
+									<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
 								</div>
 							}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -186,7 +189,7 @@ export const PDFViewer = ({ url }: PDFViewerProps) => {
 								rotate={rotation}
 								loading={
 									<div className="flex justify-center">
-										<Loader2 className="my-24 h-6 w-6 animate-spin" />
+										<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
 									</div>
 								}
 								onRenderSuccess={() => setRenderedScale(scale)}

@@ -3,7 +3,7 @@
 import Dropzone from 'react-dropzone'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Cloud, File, Loader2 } from 'lucide-react'
+import { CloudIcon, FileIcon, Loader2Icon } from 'lucide-react'
 
 import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
@@ -12,7 +12,11 @@ import { useUploadThing } from '@/lib/uploadthing'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, Progress } from '@/components/ui'
 
-const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
+interface Props {
+	isSubscribed: boolean
+}
+
+const UploadDropzone = ({ isSubscribed }: Props) => {
 	const router = useRouter()
 
 	const [isUploading, setIsUploading] = useState<boolean>(false)
@@ -99,7 +103,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 							className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
 						>
 							<div className="flex flex-col items-center justify-center pt-5 pb-6">
-								<Cloud className="h-6 w-6 text-zinc-500 mb-2" />
+								<CloudIcon className="h-6 w-6 text-zinc-500 mb-2" />
 
 								<p className="mb-2 text-sm text-zinc-700">
 									<span className="font-semibold">Click to upload</span> or drag and drop
@@ -117,7 +121,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 							{acceptedFiles && acceptedFiles[0] ? (
 								<div className="max-w-xs bg-white flex items-center rounded-md overflow-hidden outline outline-[1px] outline-zinc-200 divide-x divide-zinc-200">
 									<div className="px-3 py-2 h-full grid place-items-center">
-										<File className="h-4 w-4 text-blue-500" />
+										<FileIcon className="h-4 w-4 text-blue-500" />
 									</div>
 
 									<div className="px-3 py-2 h-full text-sm truncate">{acceptedFiles[0].name}</div>
@@ -134,7 +138,7 @@ const UploadDropzone = ({ isSubscribed }: { isSubscribed: boolean }) => {
 
 									{uploadProgress === 100 ? (
 										<div className="flex gap-1 items-center justify-center text-sm text-zinc-700 text-center pt-2">
-											<Loader2 className="h-3 w-3 animate-spin" />
+											<Loader2Icon className="h-3 w-3 animate-spin" />
 											Redirecting...
 										</div>
 									) : null}

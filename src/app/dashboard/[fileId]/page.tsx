@@ -1,16 +1,16 @@
 import { notFound, redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
-import { prisma } from '@/db'
+import { prisma } from '@/lib/prisma'
 import { ChatWrapper } from '@/components/shared/chat'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { PDFViewer } from '@/components/shared/pdf-viewer'
 
-interface DashboardIdPageProps {
+interface Props {
 	params: Promise<{ fileId: string }>
 }
 
-const DashboardIdPage = async ({ params }: DashboardIdPageProps) => {
+const DashboardIdPage = async ({ params }: Props) => {
 	const { fileId } = await params
 
 	const { getUser } = getKindeServerSession()

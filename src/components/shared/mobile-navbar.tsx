@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, Menu } from 'lucide-react'
+import { ArrowRightIcon, MenuIcon } from 'lucide-react'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components'
 
 import { Separator } from '@/components/ui'
@@ -28,7 +28,7 @@ export const MobileNavbar = ({ isAuth }: { isAuth: boolean }) => {
 
 	return (
 		<div className="sm:hidden">
-			<Menu onClick={toggleOpen} className="relative z-50 h-5 w-5 text-zinc-700 cursor-pointer" />
+			<MenuIcon onClick={toggleOpen} className="relative z-50 h-5 w-5 text-zinc-700 cursor-pointer" />
 
 			{isOpen ? (
 				<div className="fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full">
@@ -44,7 +44,7 @@ export const MobileNavbar = ({ isAuth }: { isAuth: boolean }) => {
 										href="/sign-up"
 									>
 										Get started
-										<ArrowRight className="ml-2 h-5 w-5" />
+										<ArrowRightIcon className="ml-2 h-5 w-5" />
 									</Link>
 								</li>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
-import { Loader2 } from 'lucide-react'
+import { Loader2Icon } from 'lucide-react'
 
 import { trpc } from '@/app/_trpc/client'
 import { useToast } from '@/hooks/use-toast'
@@ -9,11 +9,11 @@ import { MaxWidthWrapper } from '@/components/shared'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { Button, Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui'
 
-interface BillingFormProps {
+interface Props {
 	subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
 }
 
-export const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
+export const BillingForm = ({ subscriptionPlan }: Props) => {
 	const { toast } = useToast()
 
 	const { mutate: createStripeSession, status } = trpc.createStripeSession.useMutation({
@@ -52,7 +52,7 @@ export const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
 
 					<CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
 						<Button type="submit">
-							{isLoading ? <Loader2 className="mr-4 h-4 w-4 animate-spin" /> : null}
+							{isLoading ? <Loader2Icon className="mr-4 h-4 w-4 animate-spin" /> : null}
 
 							{subscriptionPlan.isSubscribed ? 'Manage Subscription' : 'Upgrade to PRO'}
 						</Button>

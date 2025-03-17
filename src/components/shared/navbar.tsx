@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRightIcon } from 'lucide-react'
 import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { buttonVariants, Separator } from '@/components/ui'
@@ -51,7 +51,7 @@ export const Navbar = async () => {
 											size: 'sm',
 										})}
 									>
-										Get started <ArrowRight className="ml-1.5 h-5 w-5" />
+										Get started <ArrowRightIcon className="ml-1.5 h-5 w-5" />
 									</RegisterLink>
 								</>
 							) : (

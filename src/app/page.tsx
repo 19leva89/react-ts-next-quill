@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRightIcon } from 'lucide-react'
 
 import { buttonVariants } from '@/components/ui'
 import { MaxWidthWrapper } from '@/components/shared'
@@ -29,7 +29,7 @@ const HomePage = () => {
 						className: 'mt-5',
 					})}
 				>
-					Get started <ArrowRight className="ml-2 h-5 w-5" />
+					Get started <ArrowRightIcon className="ml-2 h-5 w-5" />
 				</Link>
 			</MaxWidthWrapper>
 

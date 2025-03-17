@@ -4,6 +4,10 @@ const prismaClientSingleton = () => {
 	return new PrismaClient()
 }
 
+// const prismaClientSingleton = () => {
+// 	return new PrismaClient({ log: ['query', 'info', 'warn', 'error'] }).$extends(withAccelerate())
+// }
+
 declare const globalThis: {
 	prismaGlobal: ReturnType<typeof prismaClientSingleton>
 } & typeof global

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
-import { Expand, Loader2 } from 'lucide-react'
+import { ExpandIcon, Loader2Icon } from 'lucide-react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import SimpleBar from 'simplebar-react'
@@ -11,11 +11,11 @@ import { useToast } from '@/hooks/use-toast'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui'
 
-interface PdfFullScreenProps {
+interface Props {
 	fileUrl: string
 }
 
-export const PdfFullScreen = ({ fileUrl }: PdfFullScreenProps) => {
+export const PdfFullScreen = ({ fileUrl }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [numPages, setNumPages] = useState<number>()
 
@@ -33,8 +33,8 @@ export const PdfFullScreen = ({ fileUrl }: PdfFullScreenProps) => {
 			}}
 		>
 			<DialogTrigger onClick={() => setIsOpen(true)} asChild>
-				<Button variant="ghost" className="gap-1.5" aria-label="fullscreen">
-					<Expand className="h-4 w-4" />
+				<Button variant="ghost" size="icon" className="gap-1.5" aria-label="fullscreen">
+					<ExpandIcon className="h-4 w-4" />
 				</Button>
 			</DialogTrigger>
 
@@ -49,7 +49,7 @@ export const PdfFullScreen = ({ fileUrl }: PdfFullScreenProps) => {
 							file={fileUrl}
 							loading={
 								<div className="flex justify-center">
-									<Loader2 className="my-24 h-6 w-6 animate-spin" />
+									<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
 								</div>
 							}
 							onLoadError={() => {

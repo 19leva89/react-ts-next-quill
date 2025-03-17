@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
-import { prisma } from '@/db'
 import { openai } from '@/lib/openai'
+import { prisma } from '@/lib/prisma'
 import { getPineconeClient } from '@/lib/pinecone'
 import { SendMessageValidator } from '@/lib/send-message-validator'
 
@@ -110,7 +110,7 @@ export const POST = async (req: NextRequest) => {
 			],
 		})
 
-		const stream = OpenAIStream(response, {
+		const stream = OpenAIStream(response as unknown as Response, {
 			async onCompletion(completion) {
 				await prisma.message.create({
 					data: {
