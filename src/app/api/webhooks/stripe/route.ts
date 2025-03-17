@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
 	const session = event.data.object as Stripe.Checkout.Session
 
 	if (!session?.metadata?.userId) {
+		console.error('❌ No userId in metadata')
+
 		return new NextResponse(null, {
 			status: 200,
 		})
@@ -31,8 +33,9 @@ export async function POST(request: NextRequest) {
 
 	if (event.type === 'checkout.session.completed') {
 		const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+		console.log('📝 Subscription data:', subscription)
 
-		await prisma.user.update({
+		const updatedUser = await prisma.user.update({
 			where: {
 				id: session.metadata.userId,
 			},
@@ -43,13 +46,16 @@ export async function POST(request: NextRequest) {
 				stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
 			},
 		})
+
+		console.log('✅ CHECKOUT User updated:', updatedUser)
 	}
 
 	if (event.type === 'invoice.payment_succeeded') {
 		// Retrieve the subscription details from Stripe
 		const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+		console.log('📝 Subscription data:', subscription)
 
-		await prisma.user.update({
+		const updatedUser = await prisma.user.update({
 			where: {
 				stripeSubscriptionId: subscription.id,
 			},
@@ -58,6 +64,8 @@ export async function POST(request: NextRequest) {
 				stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
 			},
 		})
+
+		console.log('✅ INVOICE User updated:', updatedUser)
 	}
 
 	return new NextResponse(null, { status: 200 })
