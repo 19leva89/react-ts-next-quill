@@ -13,15 +13,5 @@ export { Input } from './input'
 export { Progress } from './progress'
 export { Separator } from './separator'
 export { Textarea } from './textarea'
-export {
-	Toast,
-	ToastAction,
-	ToastClose,
-	ToastDescription,
-	ToastProvider,
-	ToastTitle,
-	ToastViewport,
-} from './toast'
-export type { ToastActionElement, ToastProps } from './toast'
-export { Toaster } from './toaster'
+export { Toaster } from './sonner'
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'

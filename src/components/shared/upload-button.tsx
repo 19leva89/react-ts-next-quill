@@ -1,13 +1,13 @@
 'use client'
 
 import Dropzone from 'react-dropzone'
+import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { CloudIcon, FileIcon, Loader2Icon } from 'lucide-react'
 
 import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
-import { useToast } from '@/hooks/use-toast'
 import { useUploadThing } from '@/lib/uploadthing'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, Progress } from '@/components/ui'
@@ -22,7 +22,6 @@ const UploadDropzone = ({ isSubscribed }: Props) => {
 	const [isUploading, setIsUploading] = useState<boolean>(false)
 	const [uploadProgress, setUploadProgress] = useState<number>(0)
 
-	const { toast } = useToast()
 	const { mutateAsync, data, error } = trpc.getFile.useMutation()
 	const { startUpload } = useUploadThing(isSubscribed ? 'proPlanUploader' : 'freePlanUploader')
 
@@ -67,11 +66,7 @@ const UploadDropzone = ({ isSubscribed }: Props) => {
 					if (!res || res.length === 0) {
 						console.error('Upload failed: no response')
 
-						return toast({
-							title: 'Upload failed',
-							description: 'Try again',
-							variant: 'destructive',
-						})
+						return toast.error('Upload failed. Try again')
 					}
 
 					const fileResponse = res?.[0]
@@ -79,11 +74,7 @@ const UploadDropzone = ({ isSubscribed }: Props) => {
 					const key = fileResponse?.key
 					// console.log('File uploaded with key:', key)
 					if (!key) {
-						return toast({
-							title: 'Something went wrong',
-							description: 'Please try again later',
-							variant: 'destructive',
-						})
+						return toast.error('Something went wrong. Please try again later')
 					}
 
 					clearInterval(progressInterval)

@@ -1,7 +1,7 @@
+import { Toaster } from 'sonner'
 import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
 
-import { Toaster } from '@/components/ui'
 import { cn, constructMetadata } from '@/lib'
 import { Navbar } from '@/components/shared/navbar'
 import { AuthProvider } from '@/components/shared/auth-provider'
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 		<html lang="en" className="light">
 			<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
 				<AuthProvider>
-					<Toaster />
+					<Toaster position="bottom-right" expand={false} richColors />
 
 					<Navbar />
 

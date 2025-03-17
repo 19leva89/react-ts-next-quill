@@ -1,10 +1,10 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useMutation } from '@tanstack/react-query'
 import { ChangeEvent, createContext, ReactNode, useRef, useState } from 'react'
 
 import { trpc } from '@/app/_trpc/client'
-import { useToast } from '@/hooks/use-toast'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 
 type StreamResponse = {
@@ -30,8 +30,6 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	const utils = trpc.useUtils()
-
-	const { toast } = useToast()
 
 	const backupMessage = useRef('')
 
@@ -103,11 +101,7 @@ export const ChatContextProvider = ({ fileId, children }: Props) => {
 			setIsLoading(false)
 
 			if (!stream) {
-				return toast({
-					title: 'There was a problem sending this message',
-					description: 'Please refresh this page and try again',
-					variant: 'destructive',
-				})
+				return toast.error('There was a problem sending this message. Please refresh this page and try again')
 			}
 
 			const reader = stream.getReader()

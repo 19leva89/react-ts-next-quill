@@ -51,12 +51,15 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 					{files
 						.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 						.map((file) => (
-							<li key={file.id} className="col-span-1 rounded-lg bg-white shadow transition hover:shadow-lg">
+							<li
+								key={file.id}
+								className="col-span-1 rounded-lg bg-white shadow-sm transition hover:shadow-lg"
+							>
 								<div className="flex flex-col gap-2">
 									<div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
 										<Link
 											href={`/dashboard/${file.id}`}
-											className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500"
+											className="h-10 w-10 shrink-0 rounded-full bg-linear-to-r from-cyan-500 to-blue-500"
 										/>
 
 										<div className="flex-1 truncate">

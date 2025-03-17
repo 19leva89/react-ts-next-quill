@@ -1,5 +1,6 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Document, Page } from 'react-pdf'
 import { ExpandIcon, Loader2Icon } from 'lucide-react'
@@ -7,7 +8,6 @@ import { useResizeDetector } from 'react-resize-detector'
 
 import SimpleBar from 'simplebar-react'
 
-import { useToast } from '@/hooks/use-toast'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui'
 
@@ -18,8 +18,6 @@ interface Props {
 export const PdfFullScreen = ({ fileUrl }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [numPages, setNumPages] = useState<number>()
-
-	const { toast } = useToast()
 
 	const { width, ref } = useResizeDetector()
 
@@ -53,11 +51,7 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 								</div>
 							}
 							onLoadError={() => {
-								toast({
-									title: 'Error loading PDF',
-									description: 'Please try again later',
-									variant: 'destructive',
-								})
+								toast.error('Error loading PDF. Please try again later')
 							}}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
 							className="max-h-full"

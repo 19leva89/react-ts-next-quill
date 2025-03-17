@@ -1,10 +1,10 @@
 'use client'
 
+import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Loader2Icon } from 'lucide-react'
 
 import { trpc } from '@/app/_trpc/client'
-import { useToast } from '@/hooks/use-toast'
 import { MaxWidthWrapper } from '@/components/shared'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { Button, Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui'
@@ -14,18 +14,12 @@ interface Props {
 }
 
 export const BillingForm = ({ subscriptionPlan }: Props) => {
-	const { toast } = useToast()
-
 	const { mutate: createStripeSession, status } = trpc.createStripeSession.useMutation({
 		onSuccess: ({ url }) => {
 			if (url) window.location.href = url
 
 			if (!url) {
-				toast({
-					title: 'There was a problem...',
-					description: 'Please try again in a moment',
-					variant: 'destructive',
-				})
+				toast.error('There was a problem... Please try again in a moment')
 			}
 		},
 	})

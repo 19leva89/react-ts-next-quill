@@ -1,6 +1,7 @@
 'use client'
 
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -20,7 +21,6 @@ import {
 	Separator,
 } from '@/components/ui'
 import { cn } from '@/lib'
-import { useToast } from '@/hooks/use-toast'
 import { PdfFullScreen } from '@/components/shared/pdf-full-screen'
 
 import 'react-pdf/dist/Page/TextLayer.css'
@@ -33,8 +33,6 @@ interface Props {
 }
 
 export const PDFViewer = ({ url }: Props) => {
-	const { toast } = useToast()
-
 	const [scale, setScale] = useState<number>(1)
 	const [numPages, setNumPages] = useState<number>()
 	const [currPage, setCurrPage] = useState<number>(1)
@@ -83,7 +81,7 @@ export const PDFViewer = ({ url }: Props) => {
 	}
 
 	return (
-		<div className="w-full bg-white rounded-md shadow flex flex-col items-center">
+		<div className="w-full bg-white rounded-md shadow-sm flex flex-col items-center">
 			<div className="h-14 w-full flex items-center justify-between px-2">
 				<div className="flex items-center gap-2">
 					<Button
@@ -174,11 +172,7 @@ export const PDFViewer = ({ url }: Props) => {
 							}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
 							onLoadError={() => {
-								toast({
-									title: 'Error loading PDF',
-									description: 'Please try again later',
-									variant: 'destructive',
-								})
+								toast.error('Error loading PDF. Please try again later')
 							}}
 							className="max-h-full"
 						>

@@ -97,7 +97,7 @@ const PricingPage = async () => {
 								})}
 							>
 								{plan === 'Pro' && (
-									<div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-2 text-sm font-medium text-white">
+									<div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-linear-to-r from-blue-600 to-cyan-600 px-3 py-2 text-sm font-medium text-white">
 										Upgrade now
 									</div>
 								)}
@@ -132,7 +132,7 @@ const PricingPage = async () => {
 								<ul className="my-10 space-y-5 px-8">
 									{features.map(({ text, footnote, negative }) => (
 										<li key={text} className="flex space-x-5">
-											<div className="flex-shrink-0">
+											<div className="shrink-0">
 												{negative ? (
 													<MinusIcon className="h-6 w-6 text-gray-300" />
 												) : (
