@@ -16,7 +16,7 @@ enum UploadStatus {
 }
 
 model User {
-  id                     String    @id @unique // matches kinde user id
+  id                     String    @id @unique @map("_id") // matches kinde user id
   email                  String    @unique
   //
   File                   File[]
@@ -29,7 +29,7 @@ model User {
 }
 
 model File {
-  id           String       @id @default(cuid())
+  id           String       @id @default(cuid()) @map("_id")
   name         String
   //
   uploadStatus UploadStatus @default(PENDING)
@@ -48,7 +48,7 @@ model File {
 }
 
 model Message {
-  id            String   @id @default(cuid())
+  id            String   @id @default(cuid()) @map("_id")
   text          String   @db.Text()
   //
   isUserMessage Boolean

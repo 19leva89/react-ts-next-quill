@@ -4,6 +4,7 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { PLANS } from '@/config/stripe'
 
+// When updating apiVersion, you need to recreate webhooks in dashboard.stripe.com and STRIPE_WEBHOOK_SECRET in env
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
 	apiVersion: '2025-02-24.acacia',
 	typescript: true,
