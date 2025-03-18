@@ -1,7 +1,7 @@
-import { Toaster } from 'sonner'
 import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
 
+import { Toaster } from '@/components/ui'
 import { cn, constructMetadata } from '@/lib'
 import { Navbar } from '@/components/shared/navbar'
 import { AuthProvider } from '@/components/shared/auth-provider'

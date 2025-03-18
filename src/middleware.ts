@@ -12,7 +12,7 @@ export default withAuth(
 	},
 	{
 		// Middleware still runs on all routes, but doesn't protect these
-		publicPaths: ['/', '/pricing', '/auth-callback', '/api/webhooks(.*)', '/api/uploadthing'],
+		publicPaths: ['/', '/pricing', '/auth-callback', '/api/webhooks/stripe', '/api/uploadthing'],
 	},
 )
 
