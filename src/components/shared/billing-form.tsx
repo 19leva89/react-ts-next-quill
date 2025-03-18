@@ -45,7 +45,7 @@ export const BillingForm = ({ subscriptionPlan }: Props) => {
 					</CardHeader>
 
 					<CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
-						<Button type="submit">
+						<Button type="submit" className="transition-colors ease-in-out duration-300">
 							{isLoading ? <Loader2Icon className="mr-4 h-4 w-4 animate-spin" /> : null}
 
 							{subscriptionPlan.isSubscribed ? 'Manage Subscription' : 'Upgrade to PRO'}

@@ -32,6 +32,7 @@ export const Navbar = async () => {
 										className={buttonVariants({
 											variant: 'ghost',
 											size: 'sm',
+											className: 'transition-colors ease-in-out duration-300',
 										})}
 									>
 										Pricing
@@ -41,6 +42,7 @@ export const Navbar = async () => {
 										className={buttonVariants({
 											variant: 'ghost',
 											size: 'sm',
+											className: 'transition-colors ease-in-out duration-300',
 										})}
 									>
 										Sign in
@@ -49,6 +51,7 @@ export const Navbar = async () => {
 									<RegisterLink
 										className={buttonVariants({
 											size: 'sm',
+											className: 'transition-colors ease-in-out duration-300',
 										})}
 									>
 										Get started <ArrowRightIcon className="ml-1.5 h-5 w-5" />

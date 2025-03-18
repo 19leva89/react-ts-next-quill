@@ -110,7 +110,7 @@ const UploadDropzone = ({ isSubscribed }: Props) => {
 							</div>
 
 							{acceptedFiles && acceptedFiles[0] ? (
-								<div className="max-w-xs bg-white flex items-center rounded-md overflow-hidden outline outline-[1px] outline-zinc-200 divide-x divide-zinc-200">
+								<div className="max-w-xs bg-white flex items-center rounded-md overflow-hidden outline-[1px] outline-zinc-200 divide-x divide-zinc-200">
 									<div className="px-3 py-2 h-full grid place-items-center">
 										<FileIcon className="h-4 w-4 text-blue-500" />
 									</div>
@@ -158,7 +158,7 @@ export const UploadButton = ({ isSubscribed }: { isSubscribed: boolean }) => {
 			}}
 		>
 			<DialogTrigger onClick={() => setIsOpen(true)} asChild>
-				<Button>Upload PDF</Button>
+				<Button className="transition-colors ease-in-out duration-300">Upload PDF</Button>
 			</DialogTrigger>
 
 			<DialogContent aria-describedby={undefined}>

@@ -43,13 +43,13 @@ export const ChatInput = ({ isDisabled }: Props) => {
 
 							<Button
 								size="icon"
+								aria-label="send message"
 								disabled={isLoading || isDisabled}
 								onClick={() => {
 									addMessage()
 									textareaRef.current?.focus()
 								}}
-								aria-label="send message"
-								className="absolute right-[5px] bottom-[3px] disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
+								className="absolute right-[5px] bottom-[3px] disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 transition-colors ease-in-out duration-300"
 							>
 								<SendIcon className="h-4 w-4" />
 							</Button>

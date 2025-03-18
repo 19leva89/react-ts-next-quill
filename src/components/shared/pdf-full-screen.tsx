@@ -37,7 +37,12 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 	return (
 		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger onClick={() => setIsOpen(true)} asChild>
-				<Button variant="ghost" size="icon" className="gap-1.5" aria-label="fullscreen">
+				<Button
+					variant="ghost"
+					size="icon"
+					aria-label="fullscreen"
+					className="gap-1.5 transition-colors ease-in-out duration-300"
+				>
 					<ExpandIcon className="h-4 w-4" />
 				</Button>
 			</DialogTrigger>

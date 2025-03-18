@@ -86,7 +86,7 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 							href="/dashboard"
 							className={buttonVariants({
 								variant: 'secondary',
-								className: 'mt-4',
+								className: 'mt-4 transition-colors ease-in-out duration-300',
 							})}
 						>
 							<ChevronLeftIcon className="h-3 w-3 mr-1.5" />

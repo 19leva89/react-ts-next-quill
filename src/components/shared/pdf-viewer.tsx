@@ -90,7 +90,7 @@ export const PDFViewer = ({ url }: Props) => {
 						aria-label="previous page"
 						onClick={handlePrevPage}
 						disabled={currPage <= 1}
-						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
+						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 transition-colors ease-in-out duration-300"
 					>
 						<ChevronUpIcon className="h-4 w-4" />
 					</Button>
@@ -120,7 +120,7 @@ export const PDFViewer = ({ url }: Props) => {
 						aria-label="next page"
 						onClick={handleNextPage}
 						disabled={numPages === undefined || currPage === numPages}
-						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50"
+						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 transition-colors ease-in-out duration-300"
 					>
 						<ChevronDownIcon className="h-4 w-4" />
 					</Button>
@@ -129,7 +129,11 @@ export const PDFViewer = ({ url }: Props) => {
 				<div className="space-x-2">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button className="gap-1.5" aria-label="zoom" variant="ghost">
+							<Button
+								variant="ghost"
+								aria-label="zoom"
+								className="gap-1.5 transition-colors ease-in-out duration-300"
+							>
 								<SearchIcon className="h-4 w-4" />
 								{scale * 100}%
 								<ChevronDownIcon className="h-3 w-3 opacity-75" />
@@ -150,6 +154,7 @@ export const PDFViewer = ({ url }: Props) => {
 						size="icon"
 						aria-label="rotate 90 degrees"
 						onClick={() => setRotation((prev) => prev + 90)}
+						className="transition-colors ease-in-out duration-300"
 					>
 						<RotateCwIcon className="h-4 w-4" />
 					</Button>

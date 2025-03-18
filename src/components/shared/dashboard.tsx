@@ -86,10 +86,10 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 									</div>
 
 									<Button
-										onClick={() => deleteFile({ id: file.id })}
-										size="sm"
-										className="w-full"
 										variant="destructive"
+										size="sm"
+										onClick={() => deleteFile({ id: file.id })}
+										className="w-full transition-colors ease-in-out duration-300"
 									>
 										{currentlyDeletingFile === file.id ? (
 											<Loader2Icon className="h-4 w-4 animate-spin" />

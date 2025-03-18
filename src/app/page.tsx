@@ -26,7 +26,7 @@ const HomePage = () => {
 					href="/dashboard"
 					className={buttonVariants({
 						size: 'lg',
-						className: 'mt-5',
+						className: 'mt-5 transition-colors ease-in-out duration-300',
 					})}
 				>
 					Get started <ArrowRightIcon className="ml-2 h-5 w-5" />

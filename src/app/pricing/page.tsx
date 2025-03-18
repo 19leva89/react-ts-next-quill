@@ -177,7 +177,7 @@ const PricingPage = async () => {
 										<Link
 											href={user ? '/dashboard' : '/sign-in'}
 											className={buttonVariants({
-												className: 'w-full',
+												className: 'w-full transition-colors ease-in-out duration-300',
 												variant: 'secondary',
 											})}
 										>
@@ -191,7 +191,7 @@ const PricingPage = async () => {
 										<Link
 											href="/sign-in"
 											className={buttonVariants({
-												className: 'w-full',
+												className: 'w-full transition-colors ease-in-out duration-300',
 											})}
 										>
 											{user ? 'Upgrade now' : 'Sign up'}
