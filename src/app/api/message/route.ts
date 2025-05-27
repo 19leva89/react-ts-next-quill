@@ -17,9 +17,11 @@ export const POST = async (req: NextRequest) => {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
 
-	const { id: userId } = user
+	if (!user) {
+		return new NextResponse('UNAUTHORIZED', { status: 401 })
+	}
 
-	if (!userId) return new NextResponse('UNAUTHORIZED', { status: 401 })
+	const userId = user.id
 
 	const { fileId, message } = SendMessageValidator.parse(body)
 

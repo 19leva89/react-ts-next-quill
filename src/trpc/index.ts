@@ -18,7 +18,7 @@ export const appRouter = router({
 			const user = await getUser()
 
 			// User ID or email is missing
-			if (!user.id || !user.email) {
+			if (!user || !user.id || !user.email) {
 				throw new TRPCError({
 					code: 'UNAUTHORIZED',
 					message: 'User ID or email is missing.',

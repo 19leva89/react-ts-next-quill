@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { ExpandIcon, Loader2Icon } from 'lucide-react'
 import { useResizeDetector } from 'react-resize-detector'
 
+// @ts-expect-error: simplebar-react has missing types
 import SimpleBar from 'simplebar-react'
 
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
