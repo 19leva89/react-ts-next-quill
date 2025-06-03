@@ -15,9 +15,9 @@ export const UpgradeButton = () => {
 	return (
 		<Button
 			onClick={() => createStripeSession()}
-			className="w-full transition-colors ease-in-out duration-300"
+			className='w-full transition-colors duration-300 ease-in-out'
 		>
-			Upgrade now <ArrowRightIcon className="h-5 w-5 ml-1.5" />
+			Upgrade now <ArrowRightIcon className='ml-1.5 size-5' />
 		</Button>
 	)
 }

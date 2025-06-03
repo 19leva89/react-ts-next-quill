@@ -31,46 +31,46 @@ export const MobileNavbar = ({ isAuth }: Props) => {
 	}
 
 	return (
-		<div className="sm:hidden">
-			<MenuIcon onClick={toggleOpen} className="relative z-50 h-5 w-5 text-zinc-700 cursor-pointer" />
+		<div className='sm:hidden'>
+			<MenuIcon onClick={toggleOpen} className='relative z-50 size-5 cursor-pointer text-zinc-700' />
 
 			{isOpen ? (
-				<div className="fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full">
-					<Separator className="border-b" />
+				<div className='fixed inset-0 z-0 w-full animate-in fade-in-20 slide-in-from-top-5'>
+					<Separator className='border-b' />
 
-					<ul className="absolute bg-white shadow-xl grid w-full gap-3 px-10 pt-20 pb-8">
+					<ul className='absolute grid w-full gap-3 bg-white px-10 pt-20 pb-8 shadow-xl'>
 						{!isAuth ? (
 							<>
 								<li>
 									<Link
 										onClick={() => closeOnCurrent('/sign-up')}
-										className="flex items-center w-full font-semibold text-green-600"
-										href="/sign-up"
+										className='flex w-full items-center font-semibold text-green-600'
+										href='/sign-up'
 									>
 										Get started
-										<ArrowRightIcon className="ml-2 h-5 w-5" />
+										<ArrowRightIcon className='ml-2 size-5' />
 									</Link>
 								</li>
 
-								<li className="my-3 h-px w-full bg-gray-300" />
+								<li className='my-3 h-px w-full bg-gray-300' />
 
 								<li>
 									<Link
 										onClick={() => closeOnCurrent('/sign-in')}
-										className="flex items-center w-full font-semibold"
-										href="/sign-in"
+										className='flex w-full items-center font-semibold'
+										href='/sign-in'
 									>
 										Sign in
 									</Link>
 								</li>
 
-								<li className="my-3 h-px w-full bg-gray-300" />
+								<li className='my-3 h-px w-full bg-gray-300' />
 
 								<li>
 									<Link
 										onClick={() => closeOnCurrent('/pricing')}
-										className="flex items-center w-full font-semibold"
-										href="/pricing"
+										className='flex w-full items-center font-semibold'
+										href='/pricing'
 									>
 										Pricing
 									</Link>
@@ -81,17 +81,17 @@ export const MobileNavbar = ({ isAuth }: Props) => {
 								<li>
 									<Link
 										onClick={() => closeOnCurrent('/dashboard')}
-										className="flex items-center w-full font-semibold"
-										href="/dashboard"
+										className='flex w-full items-center font-semibold'
+										href='/dashboard'
 									>
 										Dashboard
 									</Link>
 								</li>
 
-								<li className="my-3 h-px w-full bg-gray-300" />
+								<li className='my-3 h-px w-full bg-gray-300' />
 
 								<li>
-									<div className="flex items-center w-full font-semibold">
+									<div className='flex w-full items-center font-semibold'>
 										<LogoutLink>Log out</LogoutLink>
 									</div>
 								</li>

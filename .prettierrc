@@ -1,8 +1,14 @@
 {
-	"trailingComma": "all",
-	"tabWidth": 2,
+	"jsxSingleQuote": true,
+	"plugins": ["prettier-plugin-tailwindcss"],
+	"printWidth": 110,
 	"semi": false,
 	"singleQuote": true,
-	"printWidth": 110,
+	"tailwindFunctions": ["clsx", "cn", "twMerge", "tw"],
+	"tailwindPreserveDuplicates": true,
+	"tailwindPreserveWhitespace": true,
+	"tailwindStylesheet": "./src/app/globals.css",
+	"tabWidth": 2,
+	"trailingComma": "all",
 	"useTabs": true
 }

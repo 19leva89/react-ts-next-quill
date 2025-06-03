@@ -39,34 +39,34 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
 			<DialogTrigger onClick={() => setIsOpen(true)} asChild>
 				<Button
-					variant="ghost"
-					size="icon"
-					aria-label="fullscreen"
-					className="gap-1.5 transition-colors ease-in-out duration-300"
+					variant='ghost'
+					size='icon'
+					aria-label='fullscreen'
+					className='gap-1.5 transition-colors duration-300 ease-in-out'
 				>
-					<ExpandIcon className="h-4 w-4" />
+					<ExpandIcon className='size-4' />
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent className="max-w-7xl w-full" aria-describedby={undefined}>
+			<DialogContent className='w-full max-w-7xl' aria-describedby={undefined}>
 				<VisuallyHidden asChild>
 					<DialogTitle>PDF Document Viewer</DialogTitle>
 				</VisuallyHidden>
 
-				<SimpleBar autoHide={false} className="max-h-[calc(100vh-10rem)] mt-6">
+				<SimpleBar autoHide={false} className='mt-6 max-h-[calc(100vh-10rem)]'>
 					<div ref={ref}>
 						<Document
 							file={fileUrl}
 							loading={
-								<div className="flex justify-center">
-									<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
+								<div className='flex justify-center'>
+									<Loader2Icon className='my-24 size-6 animate-spin' />
 								</div>
 							}
 							onLoadError={() => {
 								toast.error('Error loading PDF. Please try again later')
 							}}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-							className="max-h-full"
+							className='max-h-full'
 						>
 							{Array.from(new Array(numPages), (_, i) => (
 								<Page
@@ -74,7 +74,7 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 									width={width || 1}
 									pageNumber={i + 1}
 									renderTextLayer={false}
-									renderMode="canvas"
+									renderMode='canvas'
 								/>
 							))}
 						</Document>

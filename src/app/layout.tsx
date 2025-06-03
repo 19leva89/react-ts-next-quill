@@ -15,10 +15,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default async function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<html lang="en" className="light">
-			<body className={cn('min-h-screen font-sans antialiased grainy', inter.className)}>
+		<html lang='en' className='light'>
+			<body className={cn('grainy min-h-screen font-sans antialiased', inter.className)}>
 				<AuthProvider>
-					<Toaster position="bottom-right" expand={false} richColors />
+					<Toaster position='bottom-right' expand={false} richColors />
 
 					<Navbar />
 
