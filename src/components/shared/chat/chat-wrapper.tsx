@@ -33,14 +33,14 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 
 	if (isLoading)
 		return (
-			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-				<div className="flex-1 flex justify-center items-center flex-col mb-40 mt-4">
-					<div className="flex flex-col items-center gap-2">
-						<Loader2Icon className="h-8 w-8 text-blue-500 animate-spin" />
+			<div className='relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50'>
+				<div className='mt-4 mb-40 flex flex-1 flex-col items-center justify-center'>
+					<div className='flex flex-col items-center gap-2'>
+						<Loader2Icon className='size-8 animate-spin text-blue-500' />
 
-						<h3 className="font-semibold text-xl">Loading...</h3>
+						<h3 className='text-xl font-semibold'>Loading...</h3>
 
-						<p className="text-zinc-500 text-sm">We&apos;re preparing your PDF</p>
+						<p className='text-sm text-zinc-500'>We&apos;re preparing your PDF</p>
 					</div>
 				</div>
 
@@ -50,14 +50,14 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 
 	if (data?.status === UploadStatus.PROCESSING)
 		return (
-			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-				<div className="flex-1 flex justify-center items-center flex-col mb-40 mt-4">
-					<div className="flex flex-col items-center gap-2">
-						<Loader2Icon className="h-8 w-8 text-blue-500 animate-spin" />
+			<div className='relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50'>
+				<div className='mt-4 mb-40 flex flex-1 flex-col items-center justify-center'>
+					<div className='flex flex-col items-center gap-2'>
+						<Loader2Icon className='size-8 animate-spin text-blue-500' />
 
-						<h3 className="font-semibold text-xl">Processing PDF...</h3>
+						<h3 className='text-xl font-semibold'>Processing PDF...</h3>
 
-						<p className="text-zinc-500 text-sm">This won&apos;t take long</p>
+						<p className='text-sm text-zinc-500'>This won&apos;t take long</p>
 					</div>
 				</div>
 
@@ -67,15 +67,15 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 
 	if (data?.status === UploadStatus.FAILED)
 		return (
-			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-				<div className="flex-1 flex justify-center items-center flex-col mb-40 mt-4">
-					<div className="flex flex-col items-center gap-2">
-						<XCircleIcon className="h-8 w-8 text-red-500" />
+			<div className='relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50'>
+				<div className='mt-4 mb-40 flex flex-1 flex-col items-center justify-center'>
+					<div className='flex flex-col items-center gap-2'>
+						<XCircleIcon className='size-8 text-red-500' />
 
-						<h3 className="font-semibold text-xl">Too many pages in PDF</h3>
+						<h3 className='text-xl font-semibold'>Too many pages in PDF</h3>
 
-						<p className="text-zinc-500 text-sm">
-							Your <span className="font-medium">{isSubscribed ? 'Pro' : 'Free'}</span> plan supports up to{' '}
+						<p className='text-sm text-zinc-500'>
+							Your <span className='font-medium'>{isSubscribed ? 'Pro' : 'Free'}</span> plan supports up to{' '}
 							{isSubscribed
 								? PLANS.find((plan) => plan.name === 'Pro')?.pagesPerPdf
 								: PLANS.find((plan) => plan.name === 'Free')?.pagesPerPdf}{' '}
@@ -83,13 +83,13 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 						</p>
 
 						<Link
-							href="/dashboard"
+							href='/dashboard'
 							className={buttonVariants({
 								variant: 'secondary',
-								className: 'mt-4 transition-colors ease-in-out duration-300',
+								className: 'mt-4 transition-colors duration-300 ease-in-out',
 							})}
 						>
-							<ChevronLeftIcon className="h-3 w-3 mr-1.5" />
+							<ChevronLeftIcon className='mr-1.5 size-3' />
 							Back
 						</Link>
 					</div>
@@ -101,8 +101,8 @@ export const ChatWrapper = ({ fileId, isSubscribed }: Props) => {
 
 	return (
 		<ChatContextProvider fileId={fileId}>
-			<div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-				<div className="flex-1 justify-between flex flex-col mb-40 mt-4">
+			<div className='relative flex min-h-full flex-col justify-between gap-2 divide-y divide-zinc-200 bg-zinc-50'>
+				<div className='mt-4 mb-40 flex flex-1 flex-col justify-between'>
 					<Messages fileId={fileId} />
 				</div>
 

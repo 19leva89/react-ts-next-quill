@@ -27,9 +27,9 @@ export const BillingForm = ({ subscriptionPlan }: Props) => {
 	const isLoading = status === 'pending'
 
 	return (
-		<MaxWidthWrapper className="max-w-5xl">
+		<MaxWidthWrapper className='max-w-5xl'>
 			<form
-				className="mt-12"
+				className='mt-12'
 				onSubmit={(e) => {
 					e.preventDefault()
 					createStripeSession()
@@ -44,15 +44,15 @@ export const BillingForm = ({ subscriptionPlan }: Props) => {
 						</CardDescription>
 					</CardHeader>
 
-					<CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
-						<Button type="submit" className="transition-colors ease-in-out duration-300">
-							{isLoading ? <Loader2Icon className="mr-4 h-4 w-4 animate-spin" /> : null}
+					<CardFooter className='flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0'>
+						<Button type='submit' className='transition-colors duration-300 ease-in-out'>
+							{isLoading ? <Loader2Icon className='mr-4 size-4 animate-spin' /> : null}
 
 							{subscriptionPlan.isSubscribed ? 'Manage Subscription' : 'Upgrade to PRO'}
 						</Button>
 
 						{subscriptionPlan.isSubscribed ? (
-							<p className="rounded-full text-xs font-medium">
+							<p className='rounded-full text-xs font-medium'>
 								{subscriptionPlan.isCanceled ? 'Your plan will be canceled on ' : 'Your plan renews on '}
 								{format(subscriptionPlan.stripeCurrentPeriodEnd!, 'dd.MM.yyyy')}
 							</p>

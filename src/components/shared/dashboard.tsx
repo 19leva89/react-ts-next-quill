@@ -35,9 +35,9 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 	})
 
 	return (
-		<main className="mx-auto max-w-7xl md:p-10">
-			<div className="mt-8 flex flex-col items-start justify-between gap-4 pb-5 sm:flex-row sm:items-center sm:gap-0">
-				<h1 className="mb-3 font-bold text-5xl text-gray-900">My Files</h1>
+		<main className='mx-auto max-w-7xl md:p-10'>
+			<div className='mt-8 flex flex-col items-start justify-between gap-4 pb-5 sm:flex-row sm:items-center sm:gap-0'>
+				<h1 className='mb-3 text-5xl font-bold text-gray-900'>My Files</h1>
 
 				<UploadButton isSubscribed={subscriptionPlan.isSubscribed} />
 			</div>
@@ -46,24 +46,24 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 
 			{/* display all user files */}
 			{files && files?.length !== 0 ? (
-				<ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				<ul className='mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
 					{files
 						.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 						.map((file) => (
 							<li
 								key={file.id}
-								className="col-span-1 rounded-lg bg-white shadow-sm transition hover:shadow-lg"
+								className='col-span-1 rounded-lg bg-white shadow-sm transition hover:shadow-lg'
 							>
-								<div className="flex flex-col gap-2">
-									<div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
+								<div className='flex flex-col gap-2'>
+									<div className='flex w-full items-center justify-between space-x-6 px-6 pt-6'>
 										<Link
 											href={`/dashboard/${file.id}`}
-											className="h-10 w-10 shrink-0 rounded-full bg-linear-to-r from-cyan-500 to-blue-500"
+											className='size-10 shrink-0 rounded-full bg-linear-to-r from-cyan-500 to-blue-500'
 										/>
 
-										<div className="flex-1 truncate">
-											<div className="flex items-center space-x-3">
-												<h3 className="truncate text-lg font-medium text-zinc-900">
+										<div className='flex-1 truncate'>
+											<div className='flex items-center space-x-3'>
+												<h3 className='truncate text-lg font-medium text-zinc-900'>
 													<Link href={`/dashboard/${file.id}`}>{file.name}</Link>
 												</h3>
 											</div>
@@ -71,30 +71,30 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 									</div>
 								</div>
 
-								<Separator className="mt-4" />
+								<Separator className='mt-4' />
 
-								<div className="px-6 grid grid-cols-3 place-items-center py-2 gap-6 text-xs text-zinc-500">
-									<div className="flex items-center gap-2">
-										<PlusIcon className="h-4 w-4" />
+								<div className='grid grid-cols-3 place-items-center gap-6 px-6 py-2 text-xs text-zinc-500'>
+									<div className='flex items-center gap-2'>
+										<PlusIcon className='size-4' />
 
 										{format(new Date(file.createdAt), 'MMM yyyy')}
 									</div>
 
-									<div className="flex items-center gap-2">
-										<MessageSquareIcon className="h-4 w-4" />
+									<div className='flex items-center gap-2'>
+										<MessageSquareIcon className='size-4' />
 										mocked
 									</div>
 
 									<Button
-										variant="destructive"
-										size="sm"
+										variant='destructive'
+										size='sm'
 										onClick={() => deleteFile({ id: file.id })}
-										className="w-full transition-colors ease-in-out duration-300"
+										className='w-full transition-colors duration-300 ease-in-out'
 									>
 										{currentlyDeletingFile === file.id ? (
-											<Loader2Icon className="h-4 w-4 animate-spin" />
+											<Loader2Icon className='size-4 animate-spin' />
 										) : (
-											<TrashIcon className="h-4 w-4" />
+											<TrashIcon className='size-4' />
 										)}
 									</Button>
 								</div>
@@ -102,16 +102,16 @@ export const Dashboard = ({ subscriptionPlan }: Props) => {
 						))}
 				</ul>
 			) : isLoading ? (
-				<ul className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-					<Skeleton className="h-33" />
-					<Skeleton className="h-33" />
-					<Skeleton className="h-33" />
+				<ul className='mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+					<Skeleton className='h-33' />
+					<Skeleton className='h-33' />
+					<Skeleton className='h-33' />
 				</ul>
 			) : (
-				<div className="mt-16 flex flex-col items-center gap-2">
-					<GhostIcon className="h-8 w-8 text-zinc-800" />
+				<div className='mt-16 flex flex-col items-center gap-2'>
+					<GhostIcon className='size-8 text-zinc-800' />
 
-					<h3 className="font-semibold text-xl">Pretty empty around here</h3>
+					<h3 className='text-xl font-semibold'>Pretty empty around here</h3>
 
 					<p>Let&apos;s upload your first PDF</p>
 				</div>

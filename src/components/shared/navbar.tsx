@@ -15,24 +15,24 @@ export const Navbar = async () => {
 
 	return (
 		<>
-			<nav className="sticky h-14 inset-x-0 top-0 z-30 w-full bg-white/75 backdrop-blur-lg transition-all">
+			<nav className='sticky inset-x-0 top-0 z-30 h-14 w-full bg-white/75 backdrop-blur-lg transition-all'>
 				<MaxWidthWrapper>
-					<div className="flex h-14 items-center justify-between">
-						<Link href="/" className="flex z-40 font-semibold">
-							<Image src="/svg/quill-logo.svg" alt="quill" width={56} height={32} priority />
+					<div className='flex h-14 items-center justify-between'>
+						<Link href='/' className='z-40 flex font-semibold'>
+							<Image src='/svg/quill-logo.svg' alt='quill' width={56} height={32} priority />
 						</Link>
 
 						<MobileNavbar isAuth={!!user} />
 
-						<div className="hidden items-center space-x-4 sm:flex">
+						<div className='hidden items-center space-x-4 sm:flex'>
 							{!user ? (
 								<>
 									<Link
-										href="/pricing"
+										href='/pricing'
 										className={buttonVariants({
 											variant: 'ghost',
 											size: 'sm',
-											className: 'transition-colors ease-in-out duration-300',
+											className: 'transition-colors duration-300 ease-in-out',
 										})}
 									>
 										Pricing
@@ -42,7 +42,7 @@ export const Navbar = async () => {
 										className={buttonVariants({
 											variant: 'ghost',
 											size: 'sm',
-											className: 'transition-colors ease-in-out duration-300',
+											className: 'transition-colors duration-300 ease-in-out',
 										})}
 									>
 										Sign in
@@ -51,16 +51,16 @@ export const Navbar = async () => {
 									<RegisterLink
 										className={buttonVariants({
 											size: 'sm',
-											className: 'transition-colors ease-in-out duration-300',
+											className: 'transition-colors duration-300 ease-in-out',
 										})}
 									>
-										Get started <ArrowRightIcon className="ml-1.5 h-5 w-5" />
+										Get started <ArrowRightIcon className='ml-1.5 size-5' />
 									</RegisterLink>
 								</>
 							) : (
 								<>
 									<Link
-										href="/dashboard"
+										href='/dashboard'
 										className={buttonVariants({
 											variant: 'ghost',
 											size: 'sm',

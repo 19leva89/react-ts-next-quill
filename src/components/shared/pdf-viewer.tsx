@@ -82,25 +82,25 @@ export const PDFViewer = ({ url }: Props) => {
 	}
 
 	return (
-		<div className="w-full bg-white rounded-md shadow-sm flex flex-col items-center">
-			<div className="h-14 w-full flex items-center justify-between px-2">
-				<div className="flex items-center gap-2">
+		<div className='flex w-full flex-col items-center rounded-md bg-white shadow-sm'>
+			<div className='flex h-14 w-full items-center justify-between px-2'>
+				<div className='flex items-center gap-2'>
 					<Button
-						variant="ghost"
-						size="icon"
-						aria-label="previous page"
+						variant='ghost'
+						size='icon'
+						aria-label='previous page'
 						onClick={handlePrevPage}
 						disabled={currPage <= 1}
-						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 transition-colors ease-in-out duration-300"
+						className='transition-colors duration-300 ease-in-out disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50'
 					>
-						<ChevronUpIcon className="h-4 w-4" />
+						<ChevronUpIcon className='size-4' />
 					</Button>
 
-					<div className="flex items-center gap-3">
+					<div className='flex items-center gap-3'>
 						<Input
 							{...register('page')}
 							className={cn(
-								'w-14 h-full leading-none text-center',
+								'h-full w-14 text-center leading-none',
 								errors.page && 'focus-visible:ring-red-500',
 							)}
 							onKeyDown={(e) => {
@@ -110,34 +110,34 @@ export const PDFViewer = ({ url }: Props) => {
 							}}
 						/>
 
-						<p className="text-zinc-700 leading-none md:text-sm">/</p>
+						<p className='leading-none text-zinc-700 md:text-sm'>/</p>
 
-						<p className="text-zinc-700 leading-none md:text-sm">{numPages ?? 'x'}</p>
+						<p className='leading-none text-zinc-700 md:text-sm'>{numPages ?? 'x'}</p>
 					</div>
 
 					<Button
-						variant="ghost"
-						size="icon"
-						aria-label="next page"
+						variant='ghost'
+						size='icon'
+						aria-label='next page'
 						onClick={handleNextPage}
 						disabled={numPages === undefined || currPage === numPages}
-						className="disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 transition-colors ease-in-out duration-300"
+						className='transition-colors duration-300 ease-in-out disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50'
 					>
-						<ChevronDownIcon className="h-4 w-4" />
+						<ChevronDownIcon className='size-4' />
 					</Button>
 				</div>
 
-				<div className="space-x-2">
+				<div className='space-x-2'>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
-								variant="ghost"
-								aria-label="zoom"
-								className="gap-1.5 transition-colors ease-in-out duration-300"
+								variant='ghost'
+								aria-label='zoom'
+								className='gap-1.5 transition-colors duration-300 ease-in-out'
 							>
-								<SearchIcon className="h-4 w-4" />
+								<SearchIcon className='size-4' />
 								{scale * 100}%
-								<ChevronDownIcon className="h-3 w-3 opacity-75" />
+								<ChevronDownIcon className='size-3 opacity-75' />
 							</Button>
 						</DropdownMenuTrigger>
 
@@ -151,13 +151,13 @@ export const PDFViewer = ({ url }: Props) => {
 					</DropdownMenu>
 
 					<Button
-						variant="ghost"
-						size="icon"
-						aria-label="rotate 90 degrees"
+						variant='ghost'
+						size='icon'
+						aria-label='rotate 90 degrees'
 						onClick={() => setRotation((prev) => prev + 90)}
-						className="transition-colors ease-in-out duration-300"
+						className='transition-colors duration-300 ease-in-out'
 					>
-						<RotateCwIcon className="h-4 w-4" />
+						<RotateCwIcon className='size-4' />
 					</Button>
 
 					<PdfFullScreen fileUrl={url} />
@@ -166,21 +166,21 @@ export const PDFViewer = ({ url }: Props) => {
 
 			<Separator />
 
-			<div className="flex-1 w-full max-h-screen">
-				<SimpleBar autoHide={false} className="max-h-[calc(100vh-10rem)]">
+			<div className='max-h-screen w-full flex-1'>
+				<SimpleBar autoHide={false} className='max-h-[calc(100vh-10rem)]'>
 					<div ref={ref}>
 						<Document
 							file={url}
 							loading={
-								<div className="flex justify-center">
-									<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
+								<div className='flex justify-center'>
+									<Loader2Icon className='my-24 size-6 animate-spin' />
 								</div>
 							}
 							onLoadSuccess={({ numPages }) => setNumPages(numPages)}
 							onLoadError={() => {
 								toast.error('Error loading PDF. Please try again later')
 							}}
-							className="max-h-full"
+							className='max-h-full'
 						>
 							<Page
 								width={width || 1}
@@ -188,8 +188,8 @@ export const PDFViewer = ({ url }: Props) => {
 								scale={scale}
 								rotate={rotation}
 								loading={
-									<div className="flex justify-center">
-										<Loader2Icon className="my-24 h-6 w-6 animate-spin" />
+									<div className='flex justify-center'>
+										<Loader2Icon className='my-24 size-6 animate-spin' />
 									</div>
 								}
 								onRenderSuccess={() => setRenderedScale(scale)}
