@@ -3,14 +3,12 @@
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import SimpleBar from 'simplebar-react'
 import { useForm } from 'react-hook-form'
 import { Document, Page, pdfjs } from 'react-pdf'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useResizeDetector } from 'react-resize-detector'
 import { ChevronDownIcon, ChevronUpIcon, Loader2Icon, RotateCwIcon, SearchIcon } from 'lucide-react'
-
-// @ts-expect-error: simplebar-react has missing types
-import SimpleBar from 'simplebar-react'
 
 import {
 	Button,

@@ -1,15 +1,16 @@
 'use client'
 
-import { httpBatchLink } from '@trpc/client'
+import { httpBatchLink, TRPCClient } from '@trpc/client'
 import { PropsWithChildren, Suspense, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import { AppRouter } from '@/trpc'
 import { absoluteUrl } from '@/lib'
 import { trpc } from '@/app/_trpc/client'
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-	const [queryClient] = useState(() => new QueryClient())
-	const [trpcClient] = useState(() =>
+	const [queryClient] = useState<QueryClient>(() => new QueryClient())
+	const [trpcClient] = useState<TRPCClient<AppRouter>>(() =>
 		trpc.createClient({
 			links: [
 				httpBatchLink({
