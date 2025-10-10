@@ -4,7 +4,7 @@
 	"printWidth": 110,
 	"semi": false,
 	"singleQuote": true,
-	"tailwindFunctions": ["clsx", "cn", "twMerge", "tw"],
+	"tailwindFunctions": ["clsx", "cn", "cva", "twMerge", "tw"],
 	"tailwindPreserveDuplicates": true,
 	"tailwindPreserveWhitespace": true,
 	"tailwindStylesheet": "./src/app/globals.css",

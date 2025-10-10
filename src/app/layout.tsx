@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import { PropsWithChildren } from 'react'
+import { Analytics } from '@vercel/analytics/next'
 
 import { Toaster } from '@/components/ui'
 import { cn, constructMetadata } from '@/lib'
@@ -24,6 +25,9 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
 					{children}
 				</AuthProvider>
+
+				{/* Allow track page views for Vercel */}
+				<Analytics />
 			</body>
 		</html>
 	)
