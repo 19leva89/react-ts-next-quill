@@ -30,6 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # env files (can opt-in for committing if needed)
+.env*.local
 .env*
 
 # vercel
@@ -41,3 +42,6 @@ next-env.d.ts
 
 # stripe
 /stripe.exe
+
+# prisma
+/src/generated

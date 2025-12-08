@@ -6,7 +6,7 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { absoluteUrl } from '@/lib'
 import { prisma } from '@/lib/prisma'
 import { PLANS } from '@/config/stripe'
-import { UploadStatus } from '@prisma/client'
+import { UploadStatus } from '@/lib/prisma-enums'
 import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 import { getUserSubscriptionPlan, stripe } from '@/lib/stripe'
 

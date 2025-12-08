@@ -5,8 +5,8 @@ import { ChevronLeftIcon, Loader2Icon, XCircleIcon } from 'lucide-react'
 
 import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
-import { UploadStatus } from '@prisma/client'
 import { buttonVariants } from '@/components/ui'
+import { UploadStatus } from '@/lib/prisma-enums'
 import { ChatContextProvider, ChatInput, Messages } from '@/components/shared/chat'
 
 interface Props {

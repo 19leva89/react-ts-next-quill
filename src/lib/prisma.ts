@@ -1,17 +1,24 @@
-import { PrismaClient } from '@prisma/client'
+import 'dotenv/config'
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 
-const prismaClientSingleton = () => {
-	return new PrismaClient()
+//! Do not change the path, made for seed.ts
+import { PrismaClient } from '../generated/prisma/client'
+
+const isProduction = process.env.NODE_ENV === 'production'
+
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL!)
+
+const globalForPrisma = global as unknown as {
+	prisma: PrismaClient
 }
 
-// const prismaClientSingleton = () => {
-// 	return new PrismaClient({ log: ['query', 'info', 'warn', 'error'] }).$extends(withAccelerate())
-// }
+const prisma =
+	globalForPrisma.prisma ||
+	new PrismaClient({
+		adapter,
+		log: isProduction ? ['warn', 'error'] : ['info', 'warn', 'error'],
+	})
 
-declare const globalThis: {
-	prismaGlobal: ReturnType<typeof prismaClientSingleton>
-} & typeof global
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
-
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+export { prisma }
