@@ -2,9 +2,9 @@ import { notFound, redirect } from 'next/navigation'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 
 import { prisma } from '@/lib/prisma'
+import { PDFViewerWrapper } from '@/components/shared'
 import { ChatWrapper } from '@/components/shared/chat'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
-import { PDFViewer } from '@/components/shared/pdf-viewer'
 
 interface Props {
 	params: Promise<{ fileId: string }>
@@ -47,7 +47,7 @@ const DashboardIdPage = async ({ params }: Props) => {
 				<div className='flex-1 xl:flex'>
 					<div className='px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6'>
 						{/* Main area */}
-						<PDFViewer url={file.url} />
+						<PDFViewerWrapper url={file.url} />
 					</div>
 				</div>
 
