@@ -24,7 +24,11 @@ const nextConfig: NextConfig = {
 		],
 		unoptimized: true,
 	},
+	// cacheComponents: true,
+	reactCompiler: true,
 	reactStrictMode: false,
+	poweredByHeader: false, // remove X-Powered-By
+	compress: true, // gzip compression
 }
 
 export default nextConfig

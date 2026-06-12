@@ -6,7 +6,6 @@ import { Document, Page } from 'react-pdf'
 import { useEffect, useState } from 'react'
 import { ExpandIcon, Loader2Icon } from 'lucide-react'
 import { useResizeDetector } from 'react-resize-detector'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui'
 
@@ -47,9 +46,7 @@ export const PdfFullScreen = ({ fileUrl }: Props) => {
 			</DialogTrigger>
 
 			<DialogContent className='w-full max-w-7xl' aria-describedby={undefined}>
-				<VisuallyHidden asChild>
-					<DialogTitle>PDF Document Viewer</DialogTitle>
-				</VisuallyHidden>
+				<DialogTitle>PDF Document Viewer</DialogTitle>
 
 				<SimpleBar autoHide={false} className='mt-6 max-h-[calc(100vh-10rem)]'>
 					<div ref={ref}>

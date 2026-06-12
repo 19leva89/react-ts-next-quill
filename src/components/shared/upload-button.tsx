@@ -9,7 +9,6 @@ import { CloudIcon, FileIcon, Loader2Icon } from 'lucide-react'
 import { PLANS } from '@/config/stripe'
 import { trpc } from '@/app/_trpc/client'
 import { useUploadThing } from '@/lib/uploadthing'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, Progress } from '@/components/ui'
 
 interface Props {
@@ -162,9 +161,7 @@ export const UploadButton = ({ isSubscribed }: { isSubscribed: boolean }) => {
 			</DialogTrigger>
 
 			<DialogContent aria-describedby={undefined}>
-				<VisuallyHidden asChild>
-					<DialogTitle>PDF Document Upload</DialogTitle>
-				</VisuallyHidden>
+				<DialogTitle>PDF Document Upload</DialogTitle>
 
 				<UploadDropzone isSubscribed={isSubscribed} />
 			</DialogContent>
